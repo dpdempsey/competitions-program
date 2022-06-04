@@ -7,9 +7,6 @@
 import java.util.Scanner;
 
 public class SimpleCompetitions {
-    private String fileName;
-    private String memberFile;
-    private String billFile;
     private static boolean testMode;
 
     public static Scanner kb = new Scanner(System.in);
@@ -31,6 +28,9 @@ public class SimpleCompetitions {
     	//Create an object of the SimpleCompetitions class
         SimpleCompetitions sc = new SimpleCompetitions();
         String input = null;
+        String fileName;
+        String memberFile;
+        String billFile;
 
         sc.welcome();
         boolean loadFile = false;
@@ -39,10 +39,18 @@ public class SimpleCompetitions {
         while(!loop){
             System.out.println("Load competitions from file? (Y/N)?");
             input = kb.nextLine();
-            input.toUpperCase();
+            input = input.toUpperCase();
             switch(input) {
                 case "Y":
-                    sc.loadFile();
+                    //sc.loadFile();
+                    System.out.println("File name:");
+                    fileName = kb.nextLine();
+            
+                    System.out.println("Member file:");
+                    memberFile = kb.nextLine();
+            
+                    System.out.println("Bill file:");
+                    billFile = kb.nextLine();
                     loop = true;
                     break;
                 case "N":
@@ -62,12 +70,22 @@ public class SimpleCompetitions {
 
             switch(input) {
                 case "T":
-                    sc.noFileTesting();
+                    //sc.noFileTesting();
+                    System.out.println("Member file:");
+                    memberFile = kb.nextLine();
+            
+                    System.out.println("Bill file:");
+                    billFile = kb.nextLine();
                     loadFile = false;
                     testMode = true;
                     //something
                     break;
                 case "N":
+                    System.out.println("Member file:");
+                    memberFile = kb.nextLine();
+            
+                    System.out.println("Bill file:");
+                    billFile = kb.nextLine();
                     testMode = false;
                     loadFile = false;
                     //something
@@ -75,8 +93,8 @@ public class SimpleCompetitions {
                 default:
                     //something
             }
-
-        }      
+        }
+        
         
     }
 
@@ -85,10 +103,10 @@ public class SimpleCompetitions {
         System.out.println(text);
     }
 
-    public void loadFile(){
+/*     public void loadFile(){
         System.out.println("File name:");
         String fileName = kb.nextLine();
-        this.fileName = "Jeff";
+        this.fileName = fileName;
 
         System.out.println("Member file:");
         String memberFile = kb.nextLine();
@@ -108,4 +126,9 @@ public class SimpleCompetitions {
         String billFile = kb.nextLine();
         this.billFile = billFile;
     }
+
+    public String getFileName(){
+        return this.fileName;
+    } */
+
 }
