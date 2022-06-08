@@ -28,9 +28,9 @@ public class SimpleCompetitions {
     	//Create an object of the SimpleCompetitions class
         SimpleCompetitions sc = new SimpleCompetitions();
         String input = null;
-        String fileName;
-        String memberFile;
-        String billFile;
+        String fileName = null;
+        String memberFile = null;
+        String billFile = null;
 
         sc.welcome();
         boolean loadFile = false;
@@ -70,10 +70,8 @@ public class SimpleCompetitions {
 
             switch(input) {
                 case "T":
-                    //sc.noFileTesting();
                     System.out.println("Member file:");
                     memberFile = kb.nextLine();
-            
                     System.out.println("Bill file:");
                     billFile = kb.nextLine();
                     loadFile = false;
@@ -83,7 +81,6 @@ public class SimpleCompetitions {
                 case "N":
                     System.out.println("Member file:");
                     memberFile = kb.nextLine();
-            
                     System.out.println("Bill file:");
                     billFile = kb.nextLine();
                     testMode = false;
@@ -93,9 +90,30 @@ public class SimpleCompetitions {
                 default:
                     //something
             }
+            DataProvider dp = new DataProvider(memberFile, billFile);
         }
-        
-        
+
+        boolean thing = true;
+
+        while(thing){
+            sc.mainMenu();
+            String option = kb.nextLine();
+    
+            switch(option){
+                case "1":
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    break;
+                case "4":
+                    break;
+                case "5":
+                    break;
+                default:
+                    System.out.println("A number is expected. Please try again.");
+            }
+        }
     }
 
     public void welcome(){
@@ -103,32 +121,14 @@ public class SimpleCompetitions {
         System.out.println(text);
     }
 
-/*     public void loadFile(){
-        System.out.println("File name:");
-        String fileName = kb.nextLine();
-        this.fileName = fileName;
-
-        System.out.println("Member file:");
-        String memberFile = kb.nextLine();
-        this.memberFile = memberFile;
-
-        System.out.println("Bill file:");
-        String billFile = kb.nextLine();
-        this.billFile = billFile;
+    public void mainMenu(){
+        String text = "Please select an option. Type 5 to exit.\n"
+         + "1. Create a new competition\n"
+        + "2. Add new entries\n"
+        + "3. Draw winners\n"
+        + "4. Get a summary report\n"
+        + "5. Exit";
+        System.out.println(text);
     }
-
-    public void noFileTesting(){
-        System.out.println("Member file:");
-        String memberFile = kb.nextLine();
-        this.memberFile = memberFile;
-
-        System.out.println("Bill file:");
-        String billFile = kb.nextLine();
-        this.billFile = billFile;
-    }
-
-    public String getFileName(){
-        return this.fileName;
-    } */
 
 }

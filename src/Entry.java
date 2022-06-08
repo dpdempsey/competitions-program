@@ -7,13 +7,28 @@
 public class Entry {
     private int entryId;
     private String billId;
-    private String memberId;
+    private String memberID;
+    private int prize;
     
-    public void setPrize(int prize){
+    public Entry(){
+        //default
+    }
+
+    public Entry(int entryID, String billID, String memberID){
+        this.entryId = entryID;
+        this.billId = billID;
+        this.memberID = memberID;
 
     }
 
+
+
+
+    public void setPrize(int prize){
+        this.prize = prize;
+    }
+
     public int getPrize(){
-        return 1;
+        return this.prize;
     }
 }
