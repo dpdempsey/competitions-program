@@ -7,10 +7,8 @@
 public class LuckyNumbersCompetition extends Competition {
 
     public void addEntries(){
-
     }
 
     public void drawWinners(){
-        
     }
 }
