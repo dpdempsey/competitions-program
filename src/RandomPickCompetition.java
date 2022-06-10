@@ -14,6 +14,10 @@ public class RandomPickCompetition extends Competition {
     private final int[] prizes = {FIRST_PRIZE, SECOND_PRIZE, THIRD_PRIZE};
 	private ArrayList<Entry> entries = new ArrayList<Entry>();
     private final int MAX_WINNING_ENTRIES = 3;
+
+    public RandomPickCompetition(String compName){
+        setName(compName);
+    }
 	
     public void drawWinners() {
         Random randomGenerator = null;
@@ -57,5 +61,9 @@ public class RandomPickCompetition extends Competition {
 
     public int getId(){
         return 12345;
+    }
+
+    public String info(){
+        return "Competition ID: " + getID() +", Competition Name: " + getName() + ", Type: RandomPickCompetition";
     }
 }

@@ -16,6 +16,24 @@ public abstract class Competition {
 
     public abstract void drawWinners();
 
+    public abstract String info();
+
     public void report() {
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getID(){
+        return this.id;
+    }
+
+    public void setID(int id){
+        this.id = id;
     }
 }

@@ -4,25 +4,44 @@
  * LMS username: ZZZ
  */
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class SimpleCompetitions {
 
+    Competition competition;
     private static boolean testMode;
     public static Scanner kb = new Scanner(System.in);
 
-    public Competition addNewCompetition(String choice) {
-        if(choice.equals("L")){
-            RandomPickCompetition ranComp = new RandomPickCompetition();
-        }
+    public Competition addNewCompetition(String choice, String compName) {
+        
         if(choice.equals("R")){
-            LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition();
+            RandomPickCompetition ranComp = new RandomPickCompetition(compName);
+            this.competition = ranComp;
+            System.out.println("A new competition has been created!");
+            System.out.println(ranComp.info());
+            return ranComp;
+        } else if(choice.equals("L")){
+            LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition(compName);
+            System.out.println("A new competition has been created!");
+            System.out.println(luckComp.info());
+            this.competition = luckComp;
+            return luckComp;
+        } else {
+            return null;
         }
-        return null;
     }
 
     public void report() {
     	
+    }
+
+    public boolean compExists(){
+        if(this.competition == null){
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -52,10 +71,8 @@ public class SimpleCompetitions {
                 case "Y":
                     System.out.println("File name:");
                     fileName = kb.nextLine();
-            
                     System.out.println("Member file:");
                     memberFile = kb.nextLine();
-            
                     System.out.println("Bill file:");
                     billFile = kb.nextLine();
                     loop = true;
@@ -108,18 +125,32 @@ public class SimpleCompetitions {
     
             switch(option){
                 case "1":
-                System.out.println("Type of competition (L: LuckyNumbers, R: RandomPick)?:");
-                String comp = kb.nextLine();
-                if(comp.equals("L") || comp.equals("R")){
-                    sc.addNewCompetition(comp);
+                if(!sc.compExists()){
+                    System.out.println("Type of competition (L: LuckyNumbers, R: RandomPick)?:");
+                    String comp = kb.nextLine();
+                    if(comp.equals("L") || comp.equals("R")){
+                        System.out.println("Competition name: ");
+                        String compName = kb.nextLine();
+                        sc.addNewCompetition(comp, compName);
+                    } else {
+                        System.out.println("Unsupported option. Please try again!");
+                    }
                 } else {
-                    System.out.println("Unsupported option. Please try again!");
+                    System.out.println("There is an active competition. SimpleCompetitions does not support concurrent competitions!");
                 }
-                System.out.println("Competition name: ");
-                String name = kb.nextLine();
-                
                     break;
                 case "2":
+                    if(sc.compExists()){
+                        System.out.println("Bill ID:");
+                        String billID = kb.nextLine();
+                        if(billID.matches("[0-9]+") && billID.length() == 6){
+                            //
+                        } else {
+                            System.out.println("Invalid bill id! It must be a 6-digit number. Please try again.");
+                        }
+                    } else {
+                        System.out.println("There is an active competition. Please create one!");
+                    }
                     break;
                 case "3":
                     break;

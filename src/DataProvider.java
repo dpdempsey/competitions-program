@@ -67,8 +67,8 @@ public class DataProvider {
                         used = Boolean.parseBoolean(info[i]);
                     }
                 }
-                Entry entry = new Entry(billID, memberID, billAmount, used);
-                entry.add(entry);
+                Bill bill = new Bill(billID, memberID, billAmount, used);
+                bill.add(bill);
             }
         }
         catch(NumberFormatException e){
