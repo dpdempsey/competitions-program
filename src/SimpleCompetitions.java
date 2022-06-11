@@ -6,6 +6,7 @@
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class SimpleCompetitions {
 
@@ -117,9 +118,9 @@ public class SimpleCompetitions {
                 default:
                     System.out.println("Unsupported option. Please try again!");
             }
-            DataProvider dp = new DataProvider(memberFile, billFile);
+            //DataProvider dp = new DataProvider(memberFile, billFile);
         }
-
+        DataProvider dp = new DataProvider(memberFile, billFile);
         boolean menu = true;
 
         while (menu) {
@@ -144,7 +145,7 @@ public class SimpleCompetitions {
                     break;
                 case "2":
                     if (sc.compExists()) {
-                        sc.addNewEntry();
+                        dp.checkBill();
                     } else {
                         System.out.println("There is no active competition. Please create one!");
                     }
@@ -175,19 +176,6 @@ public class SimpleCompetitions {
                 + "4. Get a summary report\n"
                 + "5. Exit";
         System.out.println(text);
-    }
-
-    public void addNewEntry() {
-        boolean thing = true;
-        while (thing) {
-            System.out.println("Bill ID:");
-            String billID = kb.nextLine();
-            if (billID.matches("[0-9]+") && billID.length() == 6) {
-                bill.iterate(billID);
-            } else {
-                System.out.println("Invalid bill id! It must be a 6-digit number. Please try again.");
-            }
-        }
     }
 
 }
