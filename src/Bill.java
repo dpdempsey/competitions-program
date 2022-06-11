@@ -23,4 +23,25 @@ public class Bill {
     public void add(Bill bill) {
         bills.add(bill);
     }
+
+    public Bill iterate(String billID) {
+        for (Bill bill : bills) {
+            if ((bill.getBillId()).equals(billID)) {
+                if ((bill.getMemberId()).equals(" ")) {
+                    System.out.println("This bill has no member id. Please try again.");
+                } else {
+                    return bill;
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getBillId() {
+        return this.billId;
+    }
+
+    public String getMemberId() {
+        return this.memberID;
+    }
 }

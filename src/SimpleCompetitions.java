@@ -10,18 +10,20 @@ import java.util.Scanner;
 public class SimpleCompetitions {
 
     Competition competition;
+    Bill bill;
+    Member member;
     private static boolean testMode;
     public static Scanner kb = new Scanner(System.in);
 
     public Competition addNewCompetition(String choice, String compName) {
-        
-        if(choice.equals("R")){
+
+        if (choice.equals("R")) {
             RandomPickCompetition ranComp = new RandomPickCompetition(compName);
             this.competition = ranComp;
             System.out.println("A new competition has been created!");
             System.out.println(ranComp.info());
             return ranComp;
-        } else if(choice.equals("L")){
+        } else if (choice.equals("L")) {
             LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition(compName);
             System.out.println("A new competition has been created!");
             System.out.println(luckComp.info());
@@ -33,11 +35,11 @@ public class SimpleCompetitions {
     }
 
     public void report() {
-    	
+
     }
 
-    public boolean compExists(){
-        if(this.competition == null){
+    public boolean compExists() {
+        if (this.competition == null) {
             return false;
         } else {
             return true;
@@ -45,14 +47,15 @@ public class SimpleCompetitions {
     }
 
     /**
-    * Main program that uses the main SimpleCompetitions class
-    * @param args main program arguments
+     * Main program that uses the main SimpleCompetitions class
+     * 
+     * @param args main program arguments
      * @throws DataFormatException
      * @throws DataAccessException
-    */
+     */
     public static void main(String[] args) throws DataAccessException, DataFormatException {
-    	
-    	//Create an object of the SimpleCompetitions class
+
+        // Create an object of the SimpleCompetitions class
         SimpleCompetitions sc = new SimpleCompetitions();
         String input = null;
         String fileName = null;
@@ -63,11 +66,11 @@ public class SimpleCompetitions {
         boolean loadFile = false;
         boolean loop = false;
 
-        while(!loop){
+        while (!loop) {
             System.out.println("Load competitions from file? (Y/N)?");
             input = kb.nextLine();
             input = input.toUpperCase();
-            switch(input) {
+            switch (input) {
                 case "Y":
                     System.out.println("File name:");
                     fileName = kb.nextLine();
@@ -78,7 +81,7 @@ public class SimpleCompetitions {
                     loop = true;
                     break;
                 case "N":
-                    //something
+                    // something
                     loadFile = true;
                     loop = true;
                     break;
@@ -87,12 +90,12 @@ public class SimpleCompetitions {
             }
         }
 
-        while(loadFile){
+        while (loadFile) {
             System.out.println("Which mode would you like to run? (Type T for Testing, and N for Normal mode):");
             input = kb.nextLine();
             input = input.toUpperCase();
 
-            switch(input) {
+            switch (input) {
                 case "T":
                     System.out.println("Member file:");
                     memberFile = kb.nextLine();
@@ -100,7 +103,7 @@ public class SimpleCompetitions {
                     billFile = kb.nextLine();
                     loadFile = false;
                     testMode = true;
-                    //Testmode
+                    // Testmode
                     break;
                 case "N":
                     System.out.println("Member file:");
@@ -109,7 +112,7 @@ public class SimpleCompetitions {
                     billFile = kb.nextLine();
                     testMode = false;
                     loadFile = false;
-                    //Normal mode
+                    // Normal mode
                     break;
                 default:
                     System.out.println("Unsupported option. Please try again!");
@@ -119,37 +122,31 @@ public class SimpleCompetitions {
 
         boolean menu = true;
 
-        while(menu){
+        while (menu) {
             sc.mainMenu();
             String option = kb.nextLine();
-    
-            switch(option){
+
+            switch (option) {
                 case "1":
-                if(!sc.compExists()){
-                    System.out.println("Type of competition (L: LuckyNumbers, R: RandomPick)?:");
-                    String comp = kb.nextLine();
-                    if(comp.equals("L") || comp.equals("R")){
-                        System.out.println("Competition name: ");
-                        String compName = kb.nextLine();
-                        sc.addNewCompetition(comp, compName);
-                    } else {
-                        System.out.println("Unsupported option. Please try again!");
-                    }
-                } else {
-                    System.out.println("There is an active competition. SimpleCompetitions does not support concurrent competitions!");
-                }
-                    break;
-                case "2":
-                    if(sc.compExists()){
-                        System.out.println("Bill ID:");
-                        String billID = kb.nextLine();
-                        if(billID.matches("[0-9]+") && billID.length() == 6){
-                            //
+                    if (!sc.compExists()) {
+                        System.out.println("Type of competition (L: LuckyNumbers, R: RandomPick)?:");
+                        String comp = kb.nextLine();
+                        if (comp.equals("L") || comp.equals("R")) {
+                            System.out.println("Competition name: ");
+                            String compName = kb.nextLine();
+                            sc.addNewCompetition(comp, compName);
                         } else {
-                            System.out.println("Invalid bill id! It must be a 6-digit number. Please try again.");
+                            System.out.println("Unsupported option. Please try again!");
                         }
                     } else {
-                        System.out.println("There is an active competition. Please create one!");
+                        System.out.println("There is an active competition. SimpleCompetitions does not support concurrent competitions!");
+                    }
+                    break;
+                case "2":
+                    if (sc.compExists()) {
+                        sc.addNewEntry();
+                    } else {
+                        System.out.println("There is no active competition. Please create one!");
                     }
                     break;
                 case "3":
@@ -165,19 +162,32 @@ public class SimpleCompetitions {
         }
     }
 
-    public void welcome(){
+    public void welcome() {
         String text = "----WELCOME TO SIMPLE COMPETITIONS APP----";
         System.out.println(text);
     }
 
-    public void mainMenu(){
+    public void mainMenu() {
         String text = "Please select an option. Type 5 to exit.\n"
-         + "1. Create a new competition\n"
-        + "2. Add new entries\n"
-        + "3. Draw winners\n"
-        + "4. Get a summary report\n"
-        + "5. Exit";
+                + "1. Create a new competition\n"
+                + "2. Add new entries\n"
+                + "3. Draw winners\n"
+                + "4. Get a summary report\n"
+                + "5. Exit";
         System.out.println(text);
+    }
+
+    public void addNewEntry() {
+        boolean thing = true;
+        while (thing) {
+            System.out.println("Bill ID:");
+            String billID = kb.nextLine();
+            if (billID.matches("[0-9]+") && billID.length() == 6) {
+                bill.iterate(billID);
+            } else {
+                System.out.println("Invalid bill id! It must be a 6-digit number. Please try again.");
+            }
+        }
     }
 
 }
