@@ -11,6 +11,7 @@ public class Bill {
     private String billId;
     private String memberID;
     private double billAmount;
+    private int numOfEntries;
     private boolean used;
 
     public Bill(String billID, String memberID, Double billAmount, boolean used) {
@@ -18,6 +19,10 @@ public class Bill {
         this.billId = billID;
         this.billAmount = billAmount;
         this.used = used;
+    }
+
+    public Bill(){
+
     }
 
     public void add(Bill bill) {
@@ -37,11 +42,25 @@ public class Bill {
         return null;
     }
 
+    public int getEntries(){
+        int temp = ((int)this.billAmount/50);
+        this.numOfEntries = temp;
+        return temp;
+    }
+
     public String getBillId() {
         return this.billId;
     }
 
     public String getMemberId() {
         return this.memberID;
+    }
+
+    public double getBillAmount(){
+        return this.billAmount;
+    }
+
+    public ArrayList<Bill> getBills(){
+        return this.bills;
     }
 }

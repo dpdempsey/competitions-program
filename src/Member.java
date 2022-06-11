@@ -12,13 +12,13 @@ public class Member {
     private String memberAddress;
     private ArrayList<Member> members = new ArrayList<Member>();
 
-    public Member(String memberID, String memberName, String memberAddres){
+    public Member(String memberID, String memberName, String memberAddres) {
         this.memberID = memberID;
         this.memberName = memberName;
         this.memberAddress = memberAddres;
     }
 
-    public void add(Member member){
+    public void add(Member member) {
         members.add(member);
     }
 }

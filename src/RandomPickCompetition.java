@@ -4,21 +4,21 @@
  * LMS username: ZZZ
  */
 
- import java.util.Random;
- import java.util.ArrayList;
+import java.util.Random;
+import java.util.ArrayList;
 
 public class RandomPickCompetition extends Competition {
     private final int FIRST_PRIZE = 50000;
     private final int SECOND_PRIZE = 5000;
     private final int THIRD_PRIZE = 1000;
-    private final int[] prizes = {FIRST_PRIZE, SECOND_PRIZE, THIRD_PRIZE};
-	private ArrayList<Entry> entries = new ArrayList<Entry>();
+    private final int[] prizes = { FIRST_PRIZE, SECOND_PRIZE, THIRD_PRIZE };
+    private ArrayList<Entry> entries = new ArrayList<Entry>();
     private final int MAX_WINNING_ENTRIES = 3;
 
-    public RandomPickCompetition(String compName){
+    public RandomPickCompetition(String compName) {
         setName(compName);
     }
-	
+
     public void drawWinners() {
         Random randomGenerator = null;
         if (this.getIsTestingMode()) {
@@ -26,13 +26,13 @@ public class RandomPickCompetition extends Competition {
         } else {
             randomGenerator = new Random();
         }
-		
+
         int winningEntryCount = 0;
         while (winningEntryCount < MAX_WINNING_ENTRIES) {
             int winningEntryIndex = randomGenerator.nextInt(entries.size());
-	
+
             Entry winningEntry = entries.get(winningEntryIndex);
-		    
+
             /*
              * Ensure that once an entry has been selected,
              * it will not be selected again.
@@ -43,7 +43,7 @@ public class RandomPickCompetition extends Competition {
                 winningEntryCount++;
             }
         }
-		
+
         /*
          * Note that the above piece of code does not ensure that
          * one customer gets at most one winning entry. Add your code
@@ -51,19 +51,19 @@ public class RandomPickCompetition extends Competition {
          */
     }
 
-    public void addEntries(){
+    public void addEntries() {
 
     }
 
-    public boolean getIsTestingMode(){
+    public boolean getIsTestingMode() {
         return false;
     }
 
-    public int getId(){
+    public int getId() {
         return 12345;
     }
 
-    public String info(){
-        return "Competition ID: " + getID() +", Competition Name: " + getName() + ", Type: RandomPickCompetition";
+    public String info() {
+        return "Competition ID: " + getID() + ", Competition Name: " + getName() + ", Type: RandomPickCompetition";
     }
 }

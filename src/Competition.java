@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class Competition {
-    private String name; //competition name
-    private int id; //competition identifier
+    private String name; // competition name
+    private int id; // competition identifier
 
     public abstract void addEntries();
 
@@ -21,19 +21,19 @@ public abstract class Competition {
     public void report() {
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public int getID(){
+    public int getID() {
         return this.id;
     }
 
-    public void setID(int id){
+    public void setID(int id) {
         this.id = id;
     }
 }

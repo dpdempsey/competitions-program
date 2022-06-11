@@ -7,7 +7,7 @@
 public class NumbersEntry extends Entry {
     private int[] numbers;
 
-    public NumbersEntry(){
+    public NumbersEntry() {
         super();
     }
 }

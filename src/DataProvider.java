@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-
 public class DataProvider {
     private String fileName;
     private String memberFile;
     private String billFile;
     private ArrayList<Entry> entries = new ArrayList<Entry>();
+    private ArrayList<Bill> bills = new ArrayList<Bill>();
+    private ArrayList<Member> members = new ArrayList<Member>();
 
     /**
      * 
@@ -49,29 +50,28 @@ public class DataProvider {
             throw new DataAccessException("Bill file not found!");
         }
         try {
-            while(inputStream.hasNextLine()){
+            while (inputStream.hasNextLine()) {
                 String line = inputStream.nextLine();
                 String[] info = line.split(",");
 
-                for(int i=0; i<info.length; i++){
-                    if(i==0){
+                for (int i = 0; i < info.length; i++) {
+                    if (i == 0) {
                         billID = info[i];
                     }
-                    if(i==1){
+                    if (i == 1) {
                         memberID = info[i];
                     }
-                    if(i==2){
+                    if (i == 2) {
                         billAmount = Double.parseDouble(info[i]);
                     }
-                    if(i==3){
+                    if (i == 3) {
                         used = Boolean.parseBoolean(info[i]);
                     }
                 }
                 Bill bill = new Bill(billID, memberID, billAmount, used);
-                bill.add(bill);
+                this.bills.add(bill);
             }
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new DataFormatException("Bill file has a format error!");
         }
         inputStream.close();
@@ -89,27 +89,47 @@ public class DataProvider {
             throw new DataAccessException("Member file not found!");
         }
         try {
-            while(inputStream.hasNextLine()){
+            while (inputStream.hasNextLine()) {
                 String line = inputStream.nextLine();
                 String[] info = line.split(",");
-                for(int i=0; i<info.length; i++){
-                    if(i==0){
+                for (int i = 0; i < info.length; i++) {
+                    if (i == 0) {
                         memID = info[i];
                     }
-                    if(i==1){
+                    if (i == 1) {
                         memName = info[i];
                     }
-                    if(i==2){
+                    if (i == 2) {
                         memAddress = info[i];
                     }
                 }
                 Member member = new Member(memID, memName, memAddress);
-                member.add(member);
+                this.members.add(member);
             }
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new DataFormatException("Member file has a format error!");
         }
         inputStream.close();
+    }
+
+    public void checkBill() {
+        boolean thing = true;
+        while (thing) {
+            System.out.println("Bill ID:");
+            String billID = SimpleCompetitions.kb.nextLine();
+            if (billID.matches("[0-9]+") && billID.length() == 6) {
+                for (Bill b : bills) {
+                    if ((b.getBillId()).equals(billID)) {
+                        if ((b.getMemberId()).equals(" ")) {
+                            System.out.println("This bill has no member id. Please try again.");
+                        } else {
+                            System.out.println("This bill ($" + b.getBillAmount() + ") is eligible for " + b.getEntries() + " entries. How many manual entries did the customer fill up?:");
+                        }
+                    }
+                }
+            } else {
+                System.out.println("Invalid bill id! It must be a 6-digit number. Please try again.");
+            }
+        }
     }
 }
