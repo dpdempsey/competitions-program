@@ -4,27 +4,26 @@
  * LMS username: ZZZ
  */
 
-import java.util.ArrayList;
-
 public class Entry {
     private int entryId;
+    private static int counter = 0;
     private String billId;
     private String memberID;
-    private ArrayList<Entry> entries = new ArrayList<Entry>();
+    private int[] luckyNumbers;
     private int prize;
 
-    public Entry() {
-        // default
+    public Entry(){
+        
+    }
+
+    public Entry(int[] numbers) {
+        this.entryId = counter++;
     }
 
     public Entry(int entryID, String billID, String memberID) {
         this.entryId = entryID;
         this.billId = billID;
         this.memberID = memberID;
-    }
-
-    public void add(Entry entry) {
-        entries.add(entry);
     }
 
     public void setPrize(int prize) {

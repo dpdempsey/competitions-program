@@ -112,18 +112,18 @@ public class DataProvider {
         inputStream.close();
     }
 
-    public void checkBill() {
+    public int checkBill(String billID) {
         boolean thing = true;
         while (thing) {
-            System.out.println("Bill ID:");
-            String billID = SimpleCompetitions.kb.nextLine();
             if (billID.matches("[0-9]+") && billID.length() == 6) {
                 for (Bill b : bills) {
                     if ((b.getBillId()).equals(billID)) {
                         if ((b.getMemberId()).equals(" ")) {
                             System.out.println("This bill has no member id. Please try again.");
                         } else {
-                            System.out.println("This bill ($" + b.getBillAmount() + ") is eligible for " + b.getEntries() + " entries. How many manual entries did the customer fill up?:");
+                            System.out.print("This bill ($" + b.getBillAmount() + ") is eligible for " + b.getEntries() + " entries.");
+                            thing = false;
+                            return b.getEntries();
                         }
                     }
                 }
@@ -131,5 +131,6 @@ public class DataProvider {
                 System.out.println("Invalid bill id! It must be a 6-digit number. Please try again.");
             }
         }
+        return 0;
     }
 }

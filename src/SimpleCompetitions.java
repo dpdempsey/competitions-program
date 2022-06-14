@@ -11,8 +11,6 @@ import java.util.ArrayList;
 public class SimpleCompetitions {
 
     Competition competition;
-    Bill bill;
-    Member member;
     private static boolean testMode;
     public static Scanner kb = new Scanner(System.in);
 
@@ -37,14 +35,6 @@ public class SimpleCompetitions {
 
     public void report() {
 
-    }
-
-    public boolean compExists() {
-        if (this.competition == null) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     /**
@@ -118,7 +108,6 @@ public class SimpleCompetitions {
                 default:
                     System.out.println("Unsupported option. Please try again!");
             }
-            //DataProvider dp = new DataProvider(memberFile, billFile);
         }
         DataProvider dp = new DataProvider(memberFile, billFile);
         boolean menu = true;
@@ -126,7 +115,6 @@ public class SimpleCompetitions {
         while (menu) {
             sc.mainMenu();
             String option = kb.nextLine();
-
             switch (option) {
                 case "1":
                     if (!sc.compExists()) {
@@ -140,12 +128,34 @@ public class SimpleCompetitions {
                             System.out.println("Unsupported option. Please try again!");
                         }
                     } else {
-                        System.out.println("There is an active competition. SimpleCompetitions does not support concurrent competitions!");
+                        System.out.println(
+                                "There is an active competition. SimpleCompetitions does not support concurrent competitions!");
                     }
                     break;
                 case "2":
                     if (sc.compExists()) {
-                        dp.checkBill();
+                        boolean thing = true;
+                        while (thing) {
+                            System.out.println("Bill ID:");
+                            String billID = SimpleCompetitions.kb.nextLine();
+                            int billEntries = dp.checkBill(billID);
+                            boolean temp = true;
+                            while (temp) {
+                                System.out.println("How many manual entries did the customer fill up?:");
+                                String manual = kb.nextLine();
+                                int entries = Integer.parseInt(manual);
+                                if (entries > 0) {
+                                    if (entries > billEntries) {
+                                        System.out.println("The number must be in the range 0 to " + billEntries
+                                                + ". Please try again");
+                                    } else {
+                                        (sc.getComp()).addEntries();
+                                    }
+                                } else {
+
+                                }
+                            }
+                        }
                     } else {
                         System.out.println("There is no active competition. Please create one!");
                     }
@@ -176,6 +186,26 @@ public class SimpleCompetitions {
                 + "4. Get a summary report\n"
                 + "5. Exit";
         System.out.println(text);
+    }
+
+    public Competition getComp() {
+        return this.competition;
+    }
+
+    public boolean compExists() {
+        if (this.competition == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean checkLuckComp() {
+        if (this.competition instanceof LuckyNumbersCompetition) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

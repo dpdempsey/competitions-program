@@ -11,6 +11,7 @@ import java.util.Arrays;
 public abstract class Competition {
     private String name; // competition name
     private int id; // competition identifier
+    static int counter = 1;
 
     public abstract void addEntries();
 

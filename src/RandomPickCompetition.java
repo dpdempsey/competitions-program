@@ -17,6 +17,7 @@ public class RandomPickCompetition extends Competition {
 
     public RandomPickCompetition(String compName) {
         setName(compName);
+        setID(counter++);
     }
 
     public void drawWinners() {
@@ -52,7 +53,14 @@ public class RandomPickCompetition extends Competition {
     }
 
     public void addEntries() {
+        
+    }
 
+    public void addEntries(int billEntries) {
+        for(int i=0; i<billEntries; i++){
+            Entry entry = new Entry();
+            entries.add(entry);
+        }
     }
 
     public boolean getIsTestingMode() {
