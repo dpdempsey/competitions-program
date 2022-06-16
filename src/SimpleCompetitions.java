@@ -34,7 +34,6 @@ public class SimpleCompetitions {
     }
 
     public void report() {
-
     }
 
     /**
@@ -136,17 +135,15 @@ public class SimpleCompetitions {
                     if (sc.compExists()) {
                         boolean thing = true;
                         while (thing) {
-                            System.out.println("Bill ID:");
-                            String billID = SimpleCompetitions.kb.nextLine();
-                            int billEntries = dp.checkBill(billID);
+                            Bill bill = dp.checkBill();
                             boolean temp = true;
                             while (temp) {
                                 System.out.println("How many manual entries did the customer fill up?:");
                                 String manual = kb.nextLine();
                                 int entries = Integer.parseInt(manual);
                                 if (entries > 0) {
-                                    if (entries > billEntries) {
-                                        System.out.println("The number must be in the range 0 to " + billEntries
+                                    if (entries > bill.getEntries()) {
+                                        System.out.println("The number must be in the range 0 to " + bill.getEntries()
                                                 + ". Please try again");
                                     } else {
                                         (sc.getComp()).addEntries();

@@ -9,14 +9,16 @@ import java.util.Arrays;
 
 public class LuckyNumbersCompetition extends Competition {
     private ArrayList<Entry> entries = new ArrayList<Entry>();
+    private int[] manualEntries;
 
     public LuckyNumbersCompetition(String compName) {
         setName(compName);
+        setID(counter++);
     }
 
     public void addEntries() {
 
-        int[] manual = manualEntries();
+        manualEntries();
 
         NumbersEntry numEnt = new NumbersEntry();
         AutoNumbersEntry autoNumEnt = new AutoNumbersEntry();
@@ -24,7 +26,7 @@ public class LuckyNumbersCompetition extends Competition {
 
     }
 
-    public int[] manualEntries() {
+    public void manualEntries() {
         boolean temp = true;
         while(temp){
             System.out.println("Please enter 7 different numbers (from the range 1 to 35) separated by whitespace.");
@@ -45,11 +47,11 @@ public class LuckyNumbersCompetition extends Competition {
                     System.out.println("Invalid input! All numbers must be different!");
                 } else {
                     Arrays.sort(intArray);
-                    return intArray;
+                    this.manualEntries = intArray;
                 }
             }
         }
-        return null;
+        //return null;
     }
 
     public void drawWinners() {
