@@ -63,4 +63,12 @@ public class Bill {
     public ArrayList<Bill> getBills(){
         return this.bills;
     }
+
+    public boolean getUsed(){
+        return this.used;
+    }
+
+    public void usedBill(){
+        this.used = true;
+    }
 }

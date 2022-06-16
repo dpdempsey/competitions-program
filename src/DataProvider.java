@@ -13,7 +13,6 @@ public class DataProvider {
     private String fileName;
     private String memberFile;
     private String billFile;
-    private ArrayList<Entry> entries = new ArrayList<Entry>();
     private ArrayList<Bill> bills = new ArrayList<Bill>();
     private ArrayList<Member> members = new ArrayList<Member>();
 
@@ -112,7 +111,15 @@ public class DataProvider {
         inputStream.close();
     }
 
-    public Bill checkBill() {
+    public ArrayList<Bill> getBills(){
+        return this.bills;
+    }
+
+    public ArrayList<Member> getMembers(){
+        return this.members;
+    }
+
+/*     public Bill checkBill() {
         boolean thing = true;
         while (thing) {
             System.out.println("Bill ID:");
@@ -134,5 +141,6 @@ public class DataProvider {
             }
         }
         return null;
-    }
+    } */
+
 }

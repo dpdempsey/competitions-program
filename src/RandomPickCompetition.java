@@ -14,10 +14,12 @@ public class RandomPickCompetition extends Competition {
     private final int[] prizes = { FIRST_PRIZE, SECOND_PRIZE, THIRD_PRIZE };
     private ArrayList<Entry> entries = new ArrayList<Entry>();
     private final int MAX_WINNING_ENTRIES = 3;
+    private static int compCount = 1;
+    private static int count = 1;
 
     public RandomPickCompetition(String compName) {
         setName(compName);
-        setID(counter++);
+        setID(compCount++);
     }
 
     public void drawWinners() {
@@ -52,14 +54,15 @@ public class RandomPickCompetition extends Competition {
          */
     }
 
-    public void addEntries() {
-        
-    }
-
-    public void addEntries(int billEntries) {
+    public void addEntries(int billEntries, String memberId) {
         for(int i=0; i<billEntries; i++){
-            Entry entry = new Entry();
+            Entry entry = new Entry(memberId, counter++);
             entries.add(entry);
+        }
+
+        System.out.println("The following entries have been automatically generated:");
+        for(Entry e : entries){
+            System.out.println("Entry ID: " + e.getEntryId());
         }
     }
 

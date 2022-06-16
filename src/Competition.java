@@ -13,7 +13,7 @@ public abstract class Competition {
     private int id; // competition identifier
     static int counter = 1;
 
-    public abstract void addEntries();
+    public abstract void addEntries(int entries, String memberId);
 
     public abstract void drawWinners();
 

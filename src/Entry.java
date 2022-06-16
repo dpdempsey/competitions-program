@@ -6,25 +6,26 @@
 
 public class Entry {
     private int entryId;
-    private static int counter = 0;
+    //private static int counter = 1;
     private String billId;
-    private String memberID;
+    private String memberId;
     private int[] luckyNumbers;
     private int prize;
 
     public Entry(){
-        
     }
 
-    public Entry(int[] numbers) {
-        this.entryId = counter++;
+    public Entry(String memberId, int counter){
+        this.entryId = counter;
+        this.memberId = memberId;
     }
 
-    public Entry(int entryID, String billID, String memberID) {
-        this.entryId = entryID;
-        this.billId = billID;
-        this.memberID = memberID;
+    public Entry(String memberId, int counter, int[] numEnt){
+        this.entryId = counter;
+        this.memberId = memberId;
+        this.luckyNumbers = numEnt;
     }
+
 
     public void setPrize(int prize) {
         this.prize = prize;
@@ -32,5 +33,13 @@ public class Entry {
 
     public int getPrize() {
         return this.prize;
+    }
+
+    public int getEntryId(){
+        return this.entryId;
+    }
+
+    public int[] getNumbers(){
+        return this.luckyNumbers;
     }
 }
