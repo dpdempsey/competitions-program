@@ -43,12 +43,25 @@ public class Entry {
         return this.luckyNumbers;
     }
 
-    public String printInfo() {
+/*     public String printInfo() {
         return "Entry ID: " + getEntryId() + "    Numbers: " + printNums();
     }
 
     public String printNums() {
         String strOfInts = Arrays.toString(this.luckyNumbers).replaceAll("\\[|\\]|,", "");
         return strOfInts;
+    } */
+
+    public void printInfo() {
+        System.out.print("Entry ID: " + getEntryId() + "      Numbers: ");
+        for(int i = 0; i<luckyNumbers.length; i++){
+            System.out.printf("%3d", luckyNumbers[i]);
+        }
+    }
+
+    public void printNums() {
+        for(int i = 0; i<luckyNumbers.length; i++){
+            System.out.printf("%2d", luckyNumbers[i]);
+        }
     }
 }

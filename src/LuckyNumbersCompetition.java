@@ -30,26 +30,27 @@ public class LuckyNumbersCompetition extends Competition {
         AutoNumbersEntry autoNumEnt = new AutoNumbersEntry();
 
         if (manualEntries > 0) {
-            System.out.println("The following entries have been added:");
             for (int i = 0; i < manualEntries; i++) {
                 numEnt.manualEntries();
                 luckyNumbers = numEnt.getNumbers();
                 Entry entry = new Entry(memberId, count++, luckyNumbers);
                 entries.add(entry);
                 tempEnt.add(entry);
-                System.out.println(entry.printInfo());
             }
 
+            System.out.println("The following entries have been added:");
             for (Entry entry : tempEnt) {
-                System.out.println(entry.printInfo());
+                entry.printInfo();
             }
+            System.out.print("\n");
 
             int diff = numOfEntries - manualEntries;
             for (int i = 0; i < diff; i++) {
                 luckyNumbers = autoNumEnt.createNumbers(entries.size());
                 Entry entry = new Entry(memberId, count++, luckyNumbers);
                 entries.add(entry);
-                System.out.println(entry.printInfo() + " [Auto]");
+                entry.printInfo();
+                System.out.print(" [Auto]\n");
             }
             tempEnt.clear();
 
@@ -59,12 +60,12 @@ public class LuckyNumbersCompetition extends Competition {
                 Entry entry = new Entry(memberId, count++, luckyNumbers);
                 entries.add(entry);
                 tempEnt.add(entry);
-                System.out.println(entry.printInfo() + " [Auto]");
             }
 
             System.out.println("The following entries have been added:");
             for (Entry entry : tempEnt) {
-                System.out.println(entry.printInfo() + " [Auto]");
+                entry.printInfo();
+                System.out.print(" [Auto]\n");
             }
 
             tempEnt.clear();
@@ -92,8 +93,8 @@ public class LuckyNumbersCompetition extends Competition {
 
     }
 
-    public boolean hasEntries(){
-        if(entries.size() > 0){
+    public boolean hasEntries() {
+        if (entries.size() > 0) {
             return true;
         } else {
             return false;
