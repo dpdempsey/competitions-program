@@ -1,10 +1,8 @@
 /*
- * Student name: XXX
- * Student ID: YYY
- * LMS username: ZZZ
+ * Student name: Declan Dempsey
+ * Student ID: 1336622
+ * LMS username: ddempsey
  */
-
-import java.io.FileNotFoundException;
 
 public class DataAccessException extends Exception {
     public DataAccessException() {

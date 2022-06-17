@@ -1,7 +1,7 @@
 /*
- * Student name: XXX
- * Student ID: YYY
- * LMS username: ZZZ
+ * Student name: Declan Dempsey
+ * Student ID: 1336622
+ * LMS username: ddempsey
  */
 
 import java.util.Random;
@@ -12,20 +12,23 @@ public class RandomPickCompetition extends Competition {
     private final int SECOND_PRIZE = 5000;
     private final int THIRD_PRIZE = 1000;
     private final int[] prizes = { FIRST_PRIZE, SECOND_PRIZE, THIRD_PRIZE };
-    private ArrayList<Entry> entries = new ArrayList<Entry>();
     private final int MAX_WINNING_ENTRIES = 3;
+    private ArrayList<Entry> entries = new ArrayList<Entry>();
+    private ArrayList<Entry> tempEnt = new ArrayList<Entry>();
     private static int compCount = 1;
     private static int count = 1;
+    private boolean testingMode;
 
-    public RandomPickCompetition(String compName) {
+    public RandomPickCompetition(String compName, boolean testingMode) {
         setName(compName);
         setID(compCount++);
+        this.testingMode = testingMode;
     }
 
     public void drawWinners() {
         Random randomGenerator = null;
         if (this.getIsTestingMode()) {
-            randomGenerator = new Random(this.getId());
+            randomGenerator = new Random(this.getID());
         } else {
             randomGenerator = new Random();
         }
@@ -54,27 +57,35 @@ public class RandomPickCompetition extends Competition {
          */
     }
 
-    public void addEntries(int billEntries, String memberId) {
-        for(int i=0; i<billEntries; i++){
-            Entry entry = new Entry(memberId, counter++);
+    public void addEntries(Bill bill) {
+        int numOfEntries = bill.getEntries();
+        String memberId = bill.getMemberId();
+        for (int i = 0; i < numOfEntries; i++) {
+            Entry entry = new Entry(memberId, count++);
             entries.add(entry);
+            tempEnt.add(entry);
         }
 
         System.out.println("The following entries have been automatically generated:");
-        for(Entry e : entries){
-            System.out.println("Entry ID: " + e.getEntryId());
+        for (Entry entry : tempEnt) {
+            System.out.println("Entry ID: " + entry.getEntryId());
         }
+        tempEnt.clear();
     }
 
     public boolean getIsTestingMode() {
-        return false;
-    }
-
-    public int getId() {
-        return 12345;
+        return this.testingMode;
     }
 
     public String info() {
         return "Competition ID: " + getID() + ", Competition Name: " + getName() + ", Type: RandomPickCompetition";
+    }
+
+    public boolean hasEntries() {
+        if (entries.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

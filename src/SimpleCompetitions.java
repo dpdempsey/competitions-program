@@ -1,7 +1,7 @@
 /*
- * Student name: XXX
- * Student ID: YYY
- * LMS username: ZZZ
+ * Student name: Declan Dempsey
+ * Student ID: 1336622
+ * LMS username: ddempsey
  */
 
 import java.util.Random;
@@ -14,28 +14,28 @@ public class SimpleCompetitions {
     private ArrayList<Member> members = new ArrayList<Member>();
     private boolean isCompActive;
     Competition competition;
-    LuckyNumbersCompetition luckComp;
-    RandomPickCompetition ranComp;
-    private static boolean testMode;
+    private boolean testingMode;
     public static Scanner kb = new Scanner(System.in);
 
-    public SimpleCompetitions(){
+    public SimpleCompetitions() {
         isCompActive = false;
     }
 
     public Competition addNewCompetition(String choice, String compName) {
 
         if (choice.equals("R")) {
-            RandomPickCompetition ranComp = new RandomPickCompetition(compName);
+            RandomPickCompetition ranComp = new RandomPickCompetition(compName, getIsTestingMode());
             this.competition = ranComp;
             System.out.println("A new competition has been created!");
             System.out.println(ranComp.info());
+            this.isCompActive = true;
             return ranComp;
         } else if (choice.equals("L")) {
-            LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition(compName);
+            LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition(compName, getIsTestingMode());
             System.out.println("A new competition has been created!");
             System.out.println(luckComp.info());
             this.competition = luckComp;
+            this.isCompActive = true;
             return luckComp;
         } else {
             return null;
@@ -56,65 +56,57 @@ public class SimpleCompetitions {
 
         // Create an object of the SimpleCompetitions class
         SimpleCompetitions sc = new SimpleCompetitions();
-        String input = null;
-        String fileName = null;
-        String memberFile = null;
-        String billFile = null;
+        String input, fileName, memberFile, billFile;
+        input = fileName = memberFile = billFile = null;
 
         sc.welcome();
         boolean loadFile = false;
-        boolean loop = false;
-
-        while (!loop) {
+        boolean mode = false;
+        while (!loadFile) {
             System.out.println("Load competitions from file? (Y/N)?");
             input = kb.nextLine();
             input = input.toUpperCase();
             switch (input) {
                 case "Y":
-                    System.out.println("File name:");
+                    System.out.println("File name: ");
                     fileName = kb.nextLine();
-                    System.out.println("Member file:");
+                    System.out.println("Member file: ");
                     memberFile = kb.nextLine();
-                    System.out.println("Bill file:");
+                    System.out.println("Bill file: ");
                     billFile = kb.nextLine();
-                    loop = true;
+                    loadFile = true;
                     break;
                 case "N":
-                    // something
                     loadFile = true;
-                    loop = true;
+                    mode = true;
                     break;
                 default:
                     System.out.println("Unsupported option. Please try again!");
             }
         }
-
-        while (loadFile) {
+        while (mode) {
             System.out.println("Which mode would you like to run? (Type T for Testing, and N for Normal mode):");
             input = kb.nextLine();
             input = input.toUpperCase();
-
             switch (input) {
                 case "T":
-                    System.out.println("Member file:");
+                    System.out.println("Member file: ");
                     memberFile = kb.nextLine();
-                    System.out.println("Bill file:");
+                    System.out.println("Bill file: ");
                     billFile = kb.nextLine();
-                    loadFile = false;
-                    testMode = true;
-                    // Testmode
+                    mode = false;
+                    sc.setTestingMode(true);
                     break;
                 case "N":
-                    System.out.println("Member file:");
+                    System.out.println("Member file: ");
                     memberFile = kb.nextLine();
-                    System.out.println("Bill file:");
+                    System.out.println("Bill file: ");
                     billFile = kb.nextLine();
-                    testMode = false;
-                    loadFile = false;
-                    // Normal mode
+                    mode = false;
+                    sc.setTestingMode(false);
                     break;
                 default:
-                    System.out.println("Unsupported option. Please try again!");
+                    System.out.println("Invalid mode! Please choose again.");
             }
         }
 
@@ -130,15 +122,19 @@ public class SimpleCompetitions {
             switch (option) {
                 case "1":
                     if (!sc.isCompActive()) {
-                        System.out.println("Type of competition (L: LuckyNumbers, R: RandomPick)?:");
-                        option = kb.nextLine();
-                        if (option.equals("L") || option.equals("R")) {
-                            System.out.println("Competition name: ");
-                            String compName = kb.nextLine();
-                            sc.addNewCompetition(option, compName);
-                            competition = sc.getComp();
-                        } else {
-                            System.out.println("Unsupported option. Please try again!");
+                        boolean comp = true;
+                        while (comp) {
+                            System.out.println("Type of competition (L: LuckyNumbers, R: RandomPick)?:");
+                            option = kb.nextLine();
+                            if (option.equals("L") || option.equals("R")) {
+                                System.out.println("Competition name: ");
+                                String compName = kb.nextLine();
+                                sc.addNewCompetition(option, compName);
+                                competition = sc.getComp();
+                                comp = false;
+                            } else {
+                                System.out.println("Invalid competition type! Please choose again.");
+                            }
                         }
                     } else {
                         System.out.println(
@@ -146,45 +142,76 @@ public class SimpleCompetitions {
                     }
                     break;
                 case "2":
-                    if (!sc.isCompActive()) {
-                        boolean thing = true;
-                        while (thing) {
+                    if (sc.isCompActive()) {
+                        boolean checkBill = true;
+                        while (checkBill) {
                             Bill bill = sc.checkBill();
-                            if(competition instanceof LuckyNumbersCompetition){
+                            if (competition instanceof LuckyNumbersCompetition) {
                                 boolean temp = true;
                                 while (temp) {
-                                    System.out.println("How many manual entries did the customer fill up?:");
+                                    System.out.println(" How many manual entries did the customer fill up?:");
                                     String manual = kb.nextLine();
                                     int entries = Integer.parseInt(manual);
                                     if (entries > 0 && (entries < bill.getEntries())) {
-                                        int numOfEntries = bill.getEntries();
-                                        String memberId = bill.getMemberId();
-                                        competition.addEntries(numOfEntries, memberId);
+                                        bill.setManualEntries(entries);
+                                        competition.addEntries(bill);
+                                        boolean cond = true;
+                                        while (cond) {
+                                            System.out.println("Add more entries (Y/N)?");
+                                            option = kb.nextLine();
+                                            option = option.toUpperCase();
+                                            if (option.equals("Y")) {
+                                                cond = false;
+                                                temp = false;
+                                            } else if (option.equals("N")) {
+                                                cond = false;
+                                                temp = false;
+                                                checkBill = false;
+                                            } else {
+                                                continue;
+                                            }
+                                        }
+                                    } else if (entries == 0) {
+                                        bill.setManualEntries(entries);
+                                        competition.addEntries(bill);
+                                        boolean cond = true;
+                                        while (cond) {
+                                            System.out.println("Add more entries (Y/N)?");
+                                            option = kb.nextLine();
+                                            option = option.toUpperCase();
+                                            if (option.equals("Y")) {
+                                                cond = false;
+                                                temp = false;
+                                            } else if (option.equals("N")) {
+                                                cond = false;
+                                                temp = false;
+                                                checkBill = false;
+                                            } else {
+                                                continue;
+                                            }
+                                        }
                                     } else {
                                         System.out.println("The number must be in the range 0 to " + bill.getEntries()
-                                                    + ". Please try again");
+                                                + ". Please try again");
                                     }
                                 }
                             } else {
-                                int numOfEntries = bill.getEntries();
-                                String memberId = bill.getMemberId();
-                                competition.addEntries(numOfEntries, memberId);
+                                competition.addEntries(bill);
                                 boolean cond = true;
-                                while(cond){
+                                while (cond) {
                                     System.out.println("Add more entries (Y/N)?");
                                     option = kb.nextLine();
                                     option = option.toUpperCase();
-                                    if(option.equals("Y")){
+                                    if (option.equals("Y")) {
                                         cond = false;
                                         continue;
-                                    } else if(option.equals("N")){
+                                    } else if (option.equals("N")) {
                                         cond = false;
-                                        thing = false;
+                                        checkBill = false;
                                     } else {
                                         continue;
                                     }
                                 }
-                                //System.out.println("This bill has already been used for a competition. Please try again.");
                             }
                         }
                     } else {
@@ -192,11 +219,37 @@ public class SimpleCompetitions {
                     }
                     break;
                 case "3":
+                    if (sc.isCompActive() && sc.getComp().hasEntries()) {
+                        System.out.println((sc.getComp()).info());
+                        if (competition instanceof LuckyNumbersCompetition) {
+                            (sc.getComp()).drawWinners();
+                        }
+                    } else {
+                        if (!sc.getComp().hasEntries()) {
+                            System.out.println("The current competition has no entries yet!");
+                        } else {
+                            System.out.println("There is no active competition. Please create one!");
+                        }
+                    }
+
                     break;
                 case "4":
+                    // Get a summary report
+                    if (sc.isCompActive()) {
+                    } else {
+                        System.out.println("No competition has been created yet!");
+                    }
                     break;
                 case "5":
-                    menu = false;
+                    System.out.println("Save competitions to file? (Y/N)?");
+                    option = kb.nextLine();
+                    option = option.toUpperCase();
+                    if (option.equals("Y")) {
+                        // Save to file
+                        menu = false;
+                    } else if (option.equals("N"))
+                        menu = false;
+                    System.out.println("Goodbye!");
                     break;
                 default:
                     System.out.println("A number is expected. Please try again.");
@@ -231,7 +284,7 @@ public class SimpleCompetitions {
         }
     }
 
-    public boolean isCompActive(){
+    public boolean isCompActive() {
         return isCompActive;
     }
 
@@ -243,19 +296,19 @@ public class SimpleCompetitions {
         }
     }
 
-    public boolean checkMax(int[] intArray){
-        for(int i=0; i<intArray.length; i++){
-            if(intArray[i] > 35){
+    public boolean checkMax(int[] intArray) {
+        for (int i = 0; i < intArray.length; i++) {
+            if (intArray[i] > 35) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean checkDuplicate(int[] intArray){
-        for(int i=0; i<intArray.length; i++){
-            for(int j=i+1; j<intArray.length; j++){
-                if(intArray[i] == intArray[j]){
+    public boolean checkDuplicate(int[] intArray) {
+        for (int i = 0; i < intArray.length; i++) {
+            for (int j = i + 1; j < intArray.length; j++) {
+                if (intArray[i] == intArray[j]) {
                     return false;
                 }
             }
@@ -263,11 +316,11 @@ public class SimpleCompetitions {
         return true;
     }
 
-    public void setBills(ArrayList<Bill> bills){
+    public void setBills(ArrayList<Bill> bills) {
         this.bills = bills;
     }
 
-    public Bill checkBill(){
+    public Bill checkBill() {
         boolean thing = true;
         while (thing) {
             System.out.println("Bill ID:");
@@ -277,16 +330,17 @@ public class SimpleCompetitions {
                     if ((bill.getBillId()).equals(billID)) {
                         if ((bill.getMemberId()).equals(" ")) {
                             System.out.println("This bill has no member id. Please try again.");
-                        } else if(bill.getUsed() == true){
+                        } else if (bill.getUsed() == true) {
                             System.out.println("This bill has already been used for a competition. Please try again.");
                         } else {
-                            System.out.print("This bill ($" + bill.getBillAmount() + ") is eligible for " + bill.getEntries() + " entries.");
+                            System.out.print("This bill ($" + bill.getBillAmount() + ") is eligible for "
+                                    + bill.getEntries() + " entries.");
                             bill.usedBill();
                             thing = false;
                             return bill;
                         }
                     } else {
-                        //System.out.println("This bill does not exist. Please try again");
+                        // System.out.println("This bill does not exist. Please try again");
                     }
                 }
             } else {
@@ -296,33 +350,7 @@ public class SimpleCompetitions {
         return null;
     }
 
-    public int[] manualEntries(){
-        boolean temp2 = true;
-        while(temp2){
-            System.out.println("Please enter 7 different numbers (from the range 1 to 35) separated by whitespace.");
-            String line = SimpleCompetitions.kb.nextLine();
-            String parts[] = line.split(" ");
-            int[] intArray = new int[parts.length];
-            for(int i=0; i<parts.length; i++){
-                intArray[i] = Integer.parseInt(parts[i]);
-            }
-            if(intArray.length < 7){
-                System.out.println("Invalid input! Fewer than 7 numbers are provided. Please try again!");
-            } else if(intArray.length > 7){
-                System.out.println("Invalid input! More than 7 numbers are provided. Please try again!");
-            } else if(!this.checkMax(intArray)){
-                System.out.println("Invalid input! All numbers must be in the range from 1 to 35!");
-            } else if(!this.checkDuplicate(intArray)){
-                System.out.println("Invalid input! All numbers must be different!");
-            } else {
-                Arrays.sort(intArray);
-                return intArray;
-            }
-        }
-        return null;
-    }
-
-    public void setUsed(String billID){
+    public void setUsed(String billID) {
         for (Bill bill : bills) {
             if ((bill.getBillId()).equals(billID)) {
                 bill.usedBill();
@@ -330,22 +358,11 @@ public class SimpleCompetitions {
         }
     }
 
-/*     public Competition addNewCompetition(String choice, String compName) {
+    public boolean getIsTestingMode() {
+        return this.testingMode;
+    }
 
-        if (choice.equals("R")) {
-            RandomPickCompetition ranComp = new RandomPickCompetition(compName);
-            this.competition = ranComp;
-            System.out.println("A new competition has been created!");
-            System.out.println(ranComp.info());
-            return ranComp;
-        } else if (choice.equals("L")) {
-            LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition(compName);
-            System.out.println("A new competition has been created!");
-            System.out.println(luckComp.info());
-            this.competition = luckComp;
-            return luckComp;
-        } else {
-            return null;
-        }
-    } */
+    public void setTestingMode(boolean testMode) {
+        this.testingMode = testMode;
+    }
 }

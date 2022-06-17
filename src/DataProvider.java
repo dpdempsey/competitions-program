@@ -1,7 +1,7 @@
 /*
- * Student name: XXX
- * Student ID: YYY
- * LMS username: ZZZ
+ * Student name: Declan Dempsey
+ * Student ID: 1336622
+ * LMS username: ddempsey
  */
 
 import java.util.Scanner;
@@ -111,36 +111,11 @@ public class DataProvider {
         inputStream.close();
     }
 
-    public ArrayList<Bill> getBills(){
+    public ArrayList<Bill> getBills() {
         return this.bills;
     }
 
-    public ArrayList<Member> getMembers(){
+    public ArrayList<Member> getMembers() {
         return this.members;
     }
-
-/*     public Bill checkBill() {
-        boolean thing = true;
-        while (thing) {
-            System.out.println("Bill ID:");
-            String billID = SimpleCompetitions.kb.nextLine();
-            if (billID.matches("[0-9]+") && billID.length() == 6) {
-                for (Bill bill : bills) {
-                    if ((bill.getBillId()).equals(billID)) {
-                        if ((bill.getMemberId()).equals(" ")) {
-                            System.out.println("This bill has no member id. Please try again.");
-                        } else {
-                            System.out.print("This bill ($" + bill.getBillAmount() + ") is eligible for " + bill.getEntries() + " entries.");
-                            thing = false;
-                            return bill;
-                        }
-                    }
-                }
-            } else {
-                System.out.println("Invalid bill id! It must be a 6-digit number. Please try again.");
-            }
-        }
-        return null;
-    } */
-
 }

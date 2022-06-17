@@ -1,7 +1,7 @@
 /*
- * Student name: XXX
- * Student ID: YYY
- * LMS username: ZZZ
+ * Student name: Declan Dempsey
+ * Student ID: 1336622
+ * LMS username: ddempsey
  */
 
 import java.util.Scanner;
@@ -11,13 +11,14 @@ import java.util.Arrays;
 public abstract class Competition {
     private String name; // competition name
     private int id; // competition identifier
-    static int counter = 1;
 
-    public abstract void addEntries(int entries, String memberId);
+    public abstract void addEntries(Bill bill);
 
     public abstract void drawWinners();
 
     public abstract String info();
+
+    public abstract boolean hasEntries();
 
     public void report() {
     }
