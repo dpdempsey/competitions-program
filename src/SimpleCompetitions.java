@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class SimpleCompetitions {
     private ArrayList<Bill> bills = new ArrayList<Bill>();
-    // private ArrayList<Member> members = new ArrayList<Member>();
+    private ArrayList<Competition> archive = new ArrayList<Competition>();
     private boolean isCompActive;
     private Competition competition;
     private boolean testingMode;
@@ -221,10 +221,10 @@ public class SimpleCompetitions {
                     break;
                 case "3":
                     if (sc.isCompActive() && sc.getComp().hasEntries()) {
-                        System.out.println((sc.getComp()).info());
-                        if (competition instanceof LuckyNumbersCompetition) {
-                            (sc.getComp()).drawWinners(members);
-                        }
+                        (sc.getComp()).drawWinners(members);
+                        sc.addArchive(competition);
+                        sc.setCompActive(false);
+                        competition = null;
                     } else {
                         if (!sc.getComp().hasEntries()) {
                             System.out.println("The current competition has no entries yet!");
@@ -237,6 +237,7 @@ public class SimpleCompetitions {
                 case "4":
                     // Get a summary report
                     if (sc.isCompActive()) {
+                        sc.report(competition);
                     } else {
                         System.out.println("No competition has been created yet!");
                     }
@@ -246,7 +247,12 @@ public class SimpleCompetitions {
                     option = kb.nextLine();
                     option = option.toUpperCase();
                     if (option.equals("Y")) {
-                        // Save to file
+                        System.out.println("File name:");
+                        option = kb.nextLine();
+
+
+                        System.out.println("Competitions have been saved to file.\n" +
+                        "The bill file has also been automatically updated.");
                         menu = false;
                     } else if (option.equals("N"))
                         menu = false;
@@ -287,6 +293,10 @@ public class SimpleCompetitions {
 
     public boolean isCompActive() {
         return isCompActive;
+    }
+
+    public void setCompActive(boolean compActive){
+        this.isCompActive = compActive;
     }
 
     public boolean checkLuckComp() {
@@ -365,5 +375,35 @@ public class SimpleCompetitions {
 
     public void setTestingMode(boolean testMode) {
         this.testingMode = testMode;
+    }
+
+    public ArrayList<Competition> getArchive(){
+        return this.archive;
+    }
+
+    public void addArchive(Competition competition){
+        archive.add(competition);
+    }
+
+    public void report(Competition competition) {
+        int active = 0;
+        if(competition != null){
+            active++;
+        }                    
+        System.out.println("----SUMMARY REPORT----\n" 
+        + "+Number of completed competitions: " + archive.size() +"\n" +
+        "+Number of active competitions: " + active + "\n");
+        
+        if(archive.size() > 0){
+            for(Competition comp : archive){
+                System.out.println("Competition ID: " + comp.getID() + ", name: " + comp.getName() + ", active: no"); 
+                System.out.println("Number of entries: " + comp.getTotalEntries() + "\n" + 
+                "Number of winning entries: " + comp.getWinningEntries() + "\n" + 
+                "Total awarded prizes: " + comp.getTotalPrize() + "\n");
+                
+            }
+        }
+        System.out.print("Competition ID: " + competition.getID() + ", name: " + competition.getName() + ", active: yes\n");
+        System.out.println("Number of entries: " + competition.getTotalEntries());
     }
 }

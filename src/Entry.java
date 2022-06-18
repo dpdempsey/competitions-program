@@ -12,26 +12,22 @@ public class Entry {
     private String memberId;
     private int[] luckyNumbers;
     private int prize;
+    private boolean manualEntry;
     private static int counter = 1;
 
     public Entry() {
     }
 
-    public Entry(String memberId, int counter) {
-        this.entryId = counter;
+    public Entry(String memberId) {
+        this.entryId = counter++;
         this.memberId = memberId;
     }
 
-    public Entry(String memberId, int counter, int[] numEnt) {
-        this.entryId = counter;
-        this.memberId = memberId;
-        this.luckyNumbers = numEnt;
-    }
-
-    public Entry(String memberId, int[] numEnt) {
+    public Entry(String memberId, int[] numEnt, boolean manualEntry) {
         this.entryId = counter++;
         this.memberId = memberId;
         this.luckyNumbers = numEnt;
+        this.manualEntry = manualEntry;
     }
 
     public void setPrize(int prize) {
@@ -46,6 +42,12 @@ public class Entry {
         return this.entryId;
     }
 
+    public String formatEntryId(){
+        String s =  Integer.toString(getEntryId());
+        s = String.format("Entry ID: %-6s", s );
+        return s;
+    }
+
     public int[] getNumbers() {
         return this.luckyNumbers;
     }
@@ -54,16 +56,30 @@ public class Entry {
         return this.memberId;
     }
 
-    public void printInfo() {
-        System.out.print("Entry ID: " + getEntryId() + "      Numbers: ");
+    public void printNumbersInfo() {
+        System.out.print(formatEntryId() + "Numbers: ");
         for (int i = 0; i < luckyNumbers.length; i++) {
             System.out.printf("%3d", luckyNumbers[i]);
         }
+
+        if(!isManualEntry()){
+            System.out.println(" [Auto]");
+        } else{
+            System.out.println();
+        }
+    }
+
+    public void printInfo() {
+        System.out.print(formatEntryId());
     }
 
     public void printNums() {
         for (int i = 0; i < luckyNumbers.length; i++) {
             System.out.printf("%2d", luckyNumbers[i]);
         }
+    }
+
+    public boolean isManualEntry(){
+        return this.manualEntry;
     }
 }

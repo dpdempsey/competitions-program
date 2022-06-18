@@ -17,15 +17,13 @@ public class LuckyNumbersCompetition extends Competition {
     private final int[] prizes = { FIRST_PRIZE, SECOND_PRIZE, THIRD_PRIZE, FOURTH_PRIZE, FIFTH_PRIZE, SIXTH_PRIZE };
     private ArrayList<Entry> entries = new ArrayList<Entry>();
     private ArrayList<Entry> tempEnt = new ArrayList<Entry>();
-    private ArrayList<Winner> winners = new ArrayList<Winner>();
+    private ArrayList<Entry> winners = new ArrayList<Entry>();
     private boolean testingMode;
-    private static int compCount = 1;
-    private static int count = 1;
 
     public LuckyNumbersCompetition(String compName, boolean testingMode, ArrayList<Member> members) {
         super(members);
         setName(compName);
-        setID(compCount++);
+        setID(Competition.compCount++);
         this.testingMode = testingMode;
     }
 
@@ -41,45 +39,26 @@ public class LuckyNumbersCompetition extends Competition {
             for (int i = 0; i < manualEntries; i++) {
                 numEnt.manualEntries();
                 luckyNumbers = numEnt.getNumbers();
-                Entry entry = new Entry(memberId, luckyNumbers);
+                Entry entry = new Entry(memberId, luckyNumbers, true);
                 entries.add(entry);
                 tempEnt.add(entry);
             }
-
-            System.out.println("The following entries have been added:");
-            for (Entry entry : tempEnt) {
-                entry.printInfo();
-            }
-            System.out.print("\n");
-
-            int diff = numOfEntries - manualEntries;
-            for (int i = 0; i < diff; i++) {
-                luckyNumbers = autoNumEnt.createNumbers(entries.size());
-                Entry entry = new Entry(memberId, count++, luckyNumbers);
-                entries.add(entry);
-                entry.printInfo();
-                System.out.print(" [Auto]\n");
-            }
-            tempEnt.clear();
-
-        } else if (manualEntries == 0) {
-            for (int i = 0; i < numOfEntries; i++) {
-                luckyNumbers = autoNumEnt.createNumbers(entries.size());
-                Entry entry = new Entry(memberId, count++, luckyNumbers);
-                entries.add(entry);
-                tempEnt.add(entry);
-            }
-
-            System.out.println("The following entries have been added:");
-            for (Entry entry : tempEnt) {
-                entry.printInfo();
-                System.out.print(" [Auto]\n");
-            }
-
-            tempEnt.clear();
-        } else {
-            // something
         }
+
+        int diff = numOfEntries - manualEntries;
+        for (int i = 0; i < diff; i++) {
+            luckyNumbers = autoNumEnt.createNumbers(entries.size());
+            Entry entry = new Entry(memberId, luckyNumbers, false);
+            entries.add(entry);
+            tempEnt.add(entry);
+        }
+
+        System.out.println("The following entries have been added:");
+        for (Entry entry : tempEnt) {
+            entry.printNumbersInfo();
+        }
+        tempEnt.clear();
+
     }
 
     public void drawWinners(ArrayList<Member> members) {
@@ -87,12 +66,12 @@ public class LuckyNumbersCompetition extends Competition {
         AutoNumbersEntry autoNum = new AutoNumbersEntry();
         int[] winNum = autoNum.createNumbers(getID());
 
-        System.out.println("Lucky Numbers: ");
+        System.out.print("Lucky Numbers:");
         for (int i = 0; i < winNum.length; i++) {
-            System.out.printf("%2d", winNum[i]);
+            System.out.printf("%3d", winNum[i]);
         }
+        System.out.println(" [Auto]");
 
-        System.out.println("Winning Entries:");
         ArrayList<String> winMemberId = new ArrayList<String>();
         for (Entry entry : entries) {
             int entryNum[] = entry.getNumbers();
@@ -102,12 +81,31 @@ public class LuckyNumbersCompetition extends Competition {
                 if (!winMemberId.contains(memberId)) {
                     String memberName = getMemberName(memberId);
                     int prize = prizes[entryNum.length - match];
-                    Winner winner = new Winner(entry, memberName, prize);
-                    winners.add(winner);
+                    entry.setPrize(prize);
+                    winners.add(entry);
                     winMemberId.add(memberId);
                 }
             }
         }
+
+        System.out.println("Winning Entries:");
+        int totalPrize = 0;
+        for(Entry entry : winners){
+            System.out.println("Member ID: " + entry.getMemberId() + ", Member Name: " + getMemberName(entry.getMemberId()) + ", Prize: " + entry.getPrize());
+            System.out.print("--> Entry ID: " + entry.getEntryId() +", Numbers:");
+            int[] temp = entry.getNumbers();
+            for(int i=0; i<temp.length; i++){
+                System.out.printf("%3d", temp[i]);
+            }
+            if(!entry.isManualEntry()){
+                System.out.println(" [Auto]");
+            } else{
+                System.out.println();
+            }
+            totalPrize += entry.getPrize();       
+        }
+        int winEnt = winners.size();
+        setReportInfo(totalPrize, entries.size(), winEnt);
     }
 
     public boolean hasEntries() {
@@ -160,5 +158,4 @@ public class LuckyNumbersCompetition extends Competition {
         }
         return count;
     }
-
 }

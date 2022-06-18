@@ -179,4 +179,16 @@ public class Saved {
      * return null;
      * }
      */
+
+             /*
+         * Ensure that once an entry has been selected,
+         * it will not be selected again.
+         */
+        /*
+         * Note that the above piece of code does not ensure that
+         * one customer gets at most one winning entry. Add your code
+         * to complete the logic.
+         */
+
+        //</Users/declandempsey/Downloads/test
 }
