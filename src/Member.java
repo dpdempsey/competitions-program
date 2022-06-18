@@ -9,6 +9,15 @@ import java.util.ArrayList;
 public class Member {
     private String memberID;
     private String memberName;
+
+    public String getMemberID() {
+        return this.memberID;
+    }
+
+    public String getMemberName() {
+        return this.memberName;
+    }
+
     private String memberAddress;
     private ArrayList<Member> members = new ArrayList<Member>();
 
@@ -21,4 +30,5 @@ public class Member {
     public void add(Member member) {
         members.add(member);
     }
+
 }

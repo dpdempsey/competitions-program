@@ -12,6 +12,7 @@ public class Entry {
     private String memberId;
     private int[] luckyNumbers;
     private int prize;
+    private static int counter = 1;
 
     public Entry() {
     }
@@ -23,6 +24,12 @@ public class Entry {
 
     public Entry(String memberId, int counter, int[] numEnt) {
         this.entryId = counter;
+        this.memberId = memberId;
+        this.luckyNumbers = numEnt;
+    }
+
+    public Entry(String memberId, int[] numEnt) {
+        this.entryId = counter++;
         this.memberId = memberId;
         this.luckyNumbers = numEnt;
     }
@@ -43,24 +50,19 @@ public class Entry {
         return this.luckyNumbers;
     }
 
-/*     public String printInfo() {
-        return "Entry ID: " + getEntryId() + "    Numbers: " + printNums();
+    public String getMemberId() {
+        return this.memberId;
     }
-
-    public String printNums() {
-        String strOfInts = Arrays.toString(this.luckyNumbers).replaceAll("\\[|\\]|,", "");
-        return strOfInts;
-    } */
 
     public void printInfo() {
         System.out.print("Entry ID: " + getEntryId() + "      Numbers: ");
-        for(int i = 0; i<luckyNumbers.length; i++){
+        for (int i = 0; i < luckyNumbers.length; i++) {
             System.out.printf("%3d", luckyNumbers[i]);
         }
     }
 
     public void printNums() {
-        for(int i = 0; i<luckyNumbers.length; i++){
+        for (int i = 0; i < luckyNumbers.length; i++) {
             System.out.printf("%2d", luckyNumbers[i]);
         }
     }

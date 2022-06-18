@@ -14,7 +14,6 @@ public class DataProvider {
     private String memberFile;
     private String billFile;
     private ArrayList<Bill> bills = new ArrayList<Bill>();
-    private ArrayList<Member> members = new ArrayList<Member>();
 
     /**
      * 
@@ -36,12 +35,13 @@ public class DataProvider {
 
     }
 
-    public void readBillFile(String billFile) throws DataAccessException, DataFormatException {
+    public ArrayList<Bill> readBillFile(String billFile) throws DataAccessException, DataFormatException {
         Scanner inputStream = null;
         String billID = null;
         String memberID = null;
         double billAmount = 0;
         boolean used = false;
+        ArrayList<Bill> bills = new ArrayList<Bill>();
 
         try {
             inputStream = new Scanner(new FileInputStream(billFile));
@@ -68,19 +68,21 @@ public class DataProvider {
                     }
                 }
                 Bill bill = new Bill(billID, memberID, billAmount, used);
-                this.bills.add(bill);
+                bills.add(bill);
             }
         } catch (NumberFormatException e) {
             throw new DataFormatException("Bill file has a format error!");
         }
         inputStream.close();
+        return bills;
     }
 
-    public void readMemberFile(String memberfile) throws DataAccessException, DataFormatException {
+    public ArrayList<Member> readMemberFile(String memberfile) throws DataAccessException, DataFormatException {
         Scanner inputStream = null;
         String memID = null;
         String memName = null;
         String memAddress = null;
+        ArrayList<Member> members = new ArrayList<Member>();
 
         try {
             inputStream = new Scanner(new FileInputStream(memberFile));
@@ -103,19 +105,12 @@ public class DataProvider {
                     }
                 }
                 Member member = new Member(memID, memName, memAddress);
-                this.members.add(member);
+                members.add(member);
             }
         } catch (NumberFormatException e) {
             throw new DataFormatException("Member file has a format error!");
         }
         inputStream.close();
-    }
-
-    public ArrayList<Bill> getBills() {
-        return this.bills;
-    }
-
-    public ArrayList<Member> getMembers() {
-        return this.members;
+        return members;
     }
 }

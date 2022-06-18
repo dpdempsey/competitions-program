@@ -8,14 +8,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LuckyNumbersCompetition extends Competition {
+    private final int FIRST_PRIZE = 50000;
+    private final int SECOND_PRIZE = 5000;
+    private final int THIRD_PRIZE = 1000;
+    private final int FOURTH_PRIZE = 500;
+    private final int FIFTH_PRIZE = 100;
+    private final int SIXTH_PRIZE = 50;
+    private final int[] prizes = { FIRST_PRIZE, SECOND_PRIZE, THIRD_PRIZE, FOURTH_PRIZE, FIFTH_PRIZE, SIXTH_PRIZE };
     private ArrayList<Entry> entries = new ArrayList<Entry>();
     private ArrayList<Entry> tempEnt = new ArrayList<Entry>();
-    private ArrayList<Entry> winners = new ArrayList<Entry>();
+    private ArrayList<Winner> winners = new ArrayList<Winner>();
     private boolean testingMode;
     private static int compCount = 1;
     private static int count = 1;
 
-    public LuckyNumbersCompetition(String compName, boolean testingMode) {
+    public LuckyNumbersCompetition(String compName, boolean testingMode, ArrayList<Member> members) {
+        super(members);
         setName(compName);
         setID(compCount++);
         this.testingMode = testingMode;
@@ -33,7 +41,7 @@ public class LuckyNumbersCompetition extends Competition {
             for (int i = 0; i < manualEntries; i++) {
                 numEnt.manualEntries();
                 luckyNumbers = numEnt.getNumbers();
-                Entry entry = new Entry(memberId, count++, luckyNumbers);
+                Entry entry = new Entry(memberId, luckyNumbers);
                 entries.add(entry);
                 tempEnt.add(entry);
             }
@@ -69,10 +77,12 @@ public class LuckyNumbersCompetition extends Competition {
             }
 
             tempEnt.clear();
+        } else {
+            // something
         }
     }
 
-    public void drawWinners() {
+    public void drawWinners(ArrayList<Member> members) {
         System.out.println(info());
         AutoNumbersEntry autoNum = new AutoNumbersEntry();
         int[] winNum = autoNum.createNumbers(getID());
@@ -83,14 +93,21 @@ public class LuckyNumbersCompetition extends Competition {
         }
 
         System.out.println("Winning Entries:");
+        ArrayList<String> winMemberId = new ArrayList<String>();
         for (Entry entry : entries) {
             int entryNum[] = entry.getNumbers();
             int match = checkEntries(winNum, entryNum);
             if (match > 2) {
-                winners.add(entry);
+                String memberId = entry.getMemberId();
+                if (!winMemberId.contains(memberId)) {
+                    String memberName = getMemberName(memberId);
+                    int prize = prizes[entryNum.length - match];
+                    Winner winner = new Winner(entry, memberName, prize);
+                    winners.add(winner);
+                    winMemberId.add(memberId);
+                }
             }
         }
-
     }
 
     public boolean hasEntries() {
@@ -143,4 +160,5 @@ public class LuckyNumbersCompetition extends Competition {
         }
         return count;
     }
+
 }

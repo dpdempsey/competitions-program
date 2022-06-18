@@ -11,9 +11,9 @@ import java.util.Arrays;
 
 public class SimpleCompetitions {
     private ArrayList<Bill> bills = new ArrayList<Bill>();
-    private ArrayList<Member> members = new ArrayList<Member>();
+    // private ArrayList<Member> members = new ArrayList<Member>();
     private boolean isCompActive;
-    Competition competition;
+    private Competition competition;
     private boolean testingMode;
     public static Scanner kb = new Scanner(System.in);
 
@@ -21,17 +21,17 @@ public class SimpleCompetitions {
         isCompActive = false;
     }
 
-    public Competition addNewCompetition(String choice, String compName) {
+    public Competition addNewCompetition(String choice, String compName, ArrayList<Member> members) {
 
         if (choice.equals("R")) {
-            RandomPickCompetition ranComp = new RandomPickCompetition(compName, getIsTestingMode());
+            RandomPickCompetition ranComp = new RandomPickCompetition(compName, getIsTestingMode(), members);
             this.competition = ranComp;
             System.out.println("A new competition has been created!");
             System.out.println(ranComp.info());
             this.isCompActive = true;
             return ranComp;
         } else if (choice.equals("L")) {
-            LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition(compName, getIsTestingMode());
+            LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition(compName, getIsTestingMode(), members);
             System.out.println("A new competition has been created!");
             System.out.println(luckComp.info());
             this.competition = luckComp;
@@ -111,8 +111,9 @@ public class SimpleCompetitions {
         }
 
         DataProvider dp = new DataProvider(memberFile, billFile);
-        sc.bills = dp.getBills();
-        sc.members = dp.getMembers();
+        ArrayList<Bill> bills = dp.readBillFile(billFile);
+        sc.setBills(bills);
+        ArrayList<Member> members = dp.readMemberFile(memberFile);
         Competition competition = null;
 
         boolean menu = true;
@@ -129,7 +130,7 @@ public class SimpleCompetitions {
                             if (option.equals("L") || option.equals("R")) {
                                 System.out.println("Competition name: ");
                                 String compName = kb.nextLine();
-                                sc.addNewCompetition(option, compName);
+                                sc.addNewCompetition(option, compName, members);
                                 competition = sc.getComp();
                                 comp = false;
                             } else {
@@ -222,7 +223,7 @@ public class SimpleCompetitions {
                     if (sc.isCompActive() && sc.getComp().hasEntries()) {
                         System.out.println((sc.getComp()).info());
                         if (competition instanceof LuckyNumbersCompetition) {
-                            (sc.getComp()).drawWinners();
+                            (sc.getComp()).drawWinners(members);
                         }
                     } else {
                         if (!sc.getComp().hasEntries()) {

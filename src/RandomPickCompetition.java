@@ -19,13 +19,15 @@ public class RandomPickCompetition extends Competition {
     private static int count = 1;
     private boolean testingMode;
 
-    public RandomPickCompetition(String compName, boolean testingMode) {
+    public RandomPickCompetition(String compName, boolean testingMode, ArrayList<Member> members) {
+        super(members);
         setName(compName);
         setID(compCount++);
         this.testingMode = testingMode;
     }
 
-    public void drawWinners() {
+    public void drawWinners(ArrayList<Member> members) {
+        ArrayList<String> winMemberId = new ArrayList<String>();
         Random randomGenerator = null;
         if (this.getIsTestingMode()) {
             randomGenerator = new Random(this.getID());
@@ -38,18 +40,19 @@ public class RandomPickCompetition extends Competition {
             int winningEntryIndex = randomGenerator.nextInt(entries.size());
 
             Entry winningEntry = entries.get(winningEntryIndex);
-
-            /*
-             * Ensure that once an entry has been selected,
-             * it will not be selected again.
-             */
-            if (winningEntry.getPrize() == 0) {
+            String memberId = winningEntry.getMemberId();
+            if (winningEntry.getPrize() == 0 && !winMemberId.contains(memberId)) {
                 int currentPrize = prizes[winningEntryCount];
                 winningEntry.setPrize(currentPrize);
+                winMemberId.add(memberId);
                 winningEntryCount++;
             }
         }
 
+        /*
+         * Ensure that once an entry has been selected,
+         * it will not be selected again.
+         */
         /*
          * Note that the above piece of code does not ensure that
          * one customer gets at most one winning entry. Add your code
