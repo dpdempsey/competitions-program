@@ -76,7 +76,7 @@ public class RandomPickCompetition extends Competition {
             tempEnt.add(entry);
         }
 
-        System.out.println("The following entries have been automatically generated:");
+        System.out.println("\nThe following entries have been automatically generated:");
         for (Entry entry : tempEnt) {
             entry.printInfo();
             System.out.print("\n");

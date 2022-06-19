@@ -351,19 +351,18 @@ public class SimpleCompetitions implements Serializable {
         }                    
         System.out.println("----SUMMARY REPORT----\n" 
         + "+Number of completed competitions: " + archive.size() +"\n" +
-        "+Number of active competitions: " + active + "\n");
+        "+Number of active competitions: " + active);
         
         if(archive.size() > 0){
             for(Competition comp : archive){
-                System.out.println("Competition ID: " + comp.getID() + ", name: " + comp.getName() + ", active: no"); 
+                System.out.println("\nCompetition ID: " + comp.getID() + ", name: " + comp.getName() + ", active: no"); 
                 System.out.println("Number of entries: " + comp.getTotalEntries() + "\n" + 
                 "Number of winning entries: " + comp.getWinningEntries() + "\n" + 
                 "Total awarded prizes: " + comp.getTotalPrize());
-                
             }
         }
         if(competition != null){
-            System.out.print("Competition ID: " + competition.getID() + ", name: " + competition.getName() + ", active: yes\n");
+            System.out.print("\nCompetition ID: " + competition.getID() + ", name: " + competition.getName() + ", active: yes\n");
             System.out.println("Number of entries: " + competition.getEntrySize());
         }
     }

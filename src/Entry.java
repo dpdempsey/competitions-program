@@ -17,6 +17,7 @@ public class Entry implements Serializable {
     private int[] luckyNumbers;
     private int prize;
     private boolean manualEntry;
+    private int match;
     private static int counter = 1;
 
     // Default constructor
@@ -110,5 +111,13 @@ public class Entry implements Serializable {
 
     public void resetCounter(){
         counter = 1;
+    }
+
+    public void setMatch(int match){
+        this.match = match;
+    }
+
+    public int getMatch(){
+        return this.match;
     }
 }

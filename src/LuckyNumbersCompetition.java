@@ -81,19 +81,29 @@ public class LuckyNumbersCompetition extends Competition {
             System.out.printf("%3d", winNum[i]);
         }
         System.out.println(" [Auto]");
-
+        int match;
         ArrayList<String> winMemberId = new ArrayList<String>();
         for (Entry entry : entries) {
             int entryNum[] = entry.getNumbers();
-            int match = checkEntries(winNum, entryNum);
+            match = checkEntries(winNum, entryNum);
             if (match >= 2) {
+                entry.setMatch(match);
                 String memberId = entry.getMemberId();
+                int prize = prizes[entryNum.length - match];
                 if (!winMemberId.contains(memberId)) {
                     String memberName = getMemberName(memberId);
-                    int prize = prizes[entryNum.length - match];
                     entry.setPrize(prize);
                     winners.add(entry);
                     winMemberId.add(memberId);
+                } else {
+                    for(Entry ent : winners){
+                        if(entry.getMatch() > ent.getMatch()){
+                            winners.remove(ent);
+                            winners.add(entry);
+                            entry.setPrize(prize);
+                        }
+                    }
+                       
                 }
             }
         }
