@@ -8,11 +8,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
-
+/**
+ * Class used to create an array of random numbers as the
+ * auto entry for LuckyNumbers competitions
+ */
 public class AutoNumbersEntry extends NumbersEntry {
     private final int NUMBER_COUNT = 7;
     private final int MAX_NUMBER = 35;
 
+    public AutoNumbersEntry(){
+        super();
+    }
+
+    /**
+     * Creates an array of random numbers
+     * @param seed to define randomness
+     * @return the array of random numbers
+     */
     public int[] createNumbers(int seed) {
         ArrayList<Integer> validList = new ArrayList<Integer>();
         int[] tempNumbers = new int[NUMBER_COUNT];

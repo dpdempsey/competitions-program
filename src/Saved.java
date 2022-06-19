@@ -191,4 +191,54 @@ public class Saved {
          */
 
         //</Users/declandempsey/Downloads/test
+
+        /*     public void report(SimpleCompetitions sc) {
+        this.archive = sc.getArchive();
+        int active = 0;
+        if(sc.getComp() != null){
+            active++;
+        }                    
+        System.out.println("----SUMMARY REPORT----\n" 
+        + "+Number of completed competitions: " + archive.size() +"\n" +
+        "+Number of active competitions: " + active);
+        
+        if(archive.size() > 0){
+            for(Competition comp : archive){
+                System.out.println("Competition ID: " + comp.getID() + ", name: " + comp.getName() + ", active: no"); 
+                System.out.println("Number of entries: " + totalEntries + "\n" + 
+                "Number of winning entries: " + winEnt + "\n" + 
+                "Total awarded prizes: " + totalPrize + "\n");
+                
+            }
+        }
+        System.out.println("Competition ID: " + getID() + ", name: " + getName() + ", active: yes\n");
+    } */
+
+    /*     public boolean checkLuckComp() {
+        if (this.competition instanceof LuckyNumbersCompetition) {
+            return true;
+        } else {
+            return false;
+        }
+    } */
+
+/*     public boolean checkMax(int[] intArray) {
+        for (int i = 0; i < intArray.length; i++) {
+            if (intArray[i] > 35) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkDuplicate(int[] intArray) {
+        for (int i = 0; i < intArray.length; i++) {
+            for (int j = i + 1; j < intArray.length; j++) {
+                if (intArray[i] == intArray[j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    } */
 }

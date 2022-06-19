@@ -4,32 +4,62 @@
  * LMS username: ddempsey
  */
 
-import java.util.Scanner;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-public abstract class Competition {
+/**
+ * Competition abstract. Used in creating LuckyNumbersCompetitions and RandomPickCompetitions
+ * @author Declan Dempsey
+ */
+public abstract class Competition implements Serializable{
     private String name; // competition name
     private int id; // competition identifier
     private int totalPrize;
     private int totalEntries;
     private int winEnt;
+    private boolean active;
     static int compCount = 1;
     private ArrayList<Member> members = new ArrayList<Member>();
-    private ArrayList<Competition> archive = new ArrayList<Competition>();
 
+    /**
+     * 
+     * @param members the list of members
+     */
     public Competition(ArrayList<Member> members) {
         this.members = members;
+        this.active = true;
     }
 
+    /**
+     * Add entries to a competition
+     * @param bill the bill used to add entries
+     */
     public abstract void addEntries(Bill bill);
 
+    /**
+     * Draw the winners for each competition
+     * @param members the members list to find the winners name
+     */
     public abstract void drawWinners(ArrayList<Member> members);
 
+    /**
+     * Short information about the competition
+     * @return A short setence about the competition
+     */
     public abstract String info();
 
+    /**
+     * 
+     * @return true if a competition has entries currently in it
+     */
     public abstract boolean hasEntries();
 
+    public abstract int getEntrySize();
+
+    /**
+     * Returns the member name based on the memberId
+     * @param memberId
+     * @return the member's name
+     */
     public String getMemberName(String memberId) {
         String memberName = null;
         for (Member member : members) {
@@ -41,27 +71,17 @@ public abstract class Competition {
         return memberName;
     }
 
-/*     public void report(SimpleCompetitions sc) {
-        this.archive = sc.getArchive();
-        int active = 0;
-        if(sc.getComp() != null){
-            active++;
-        }                    
-        System.out.println("----SUMMARY REPORT----\n" 
-        + "+Number of completed competitions: " + archive.size() +"\n" +
-        "+Number of active competitions: " + active);
-        
-        if(archive.size() > 0){
-            for(Competition comp : archive){
-                System.out.println("Competition ID: " + comp.getID() + ", name: " + comp.getName() + ", active: no"); 
-                System.out.println("Number of entries: " + totalEntries + "\n" + 
-                "Number of winning entries: " + winEnt + "\n" + 
-                "Total awarded prizes: " + totalPrize + "\n");
-                
-            }
-        }
-        System.out.println("Competition ID: " + getID() + ", name: " + getName() + ", active: yes\n");
-    } */
+    /**
+     * Sets information to be used in the report
+     * @param totalPrize total prize one
+     * @param totalEntries total entries in the comp
+     * @param winEnt the number of winning entries
+     */
+    public void setReportInfo(int totalPrize, int totalEntries, int winEnt){
+        this.totalPrize = totalPrize;
+        this.totalEntries = totalEntries;
+        this.winEnt = winEnt;
+    }
 
     public String getName() {
         return this.name;
@@ -77,20 +97,6 @@ public abstract class Competition {
 
     public void setID(int id) {
         this.id = id;
-    }
-
-    public void addArchive(Competition competition){
-        archive.add(competition);
-    }
-
-    public int getSize(){
-        return archive.size();
-    }
-
-    public void setReportInfo(int totalPrize, int totalEntries, int winEnt){
-        this.totalPrize = totalPrize;
-        this.totalEntries = totalEntries;
-        this.winEnt = winEnt;
     }
 
     public void setTotalEntries(int totalEntries){
@@ -115,5 +121,9 @@ public abstract class Competition {
 
     public int getWinningEntries(){
         return this.winEnt;
+    }
+
+    public boolean getActive(){
+        return this.active;
     }
 }

@@ -4,9 +4,13 @@
  * LMS username: ddempsey
  */
 
-import java.util.Arrays;
+import java.io.Serializable;
 
-public class Entry {
+/**
+ * Entry class used to create entry objects
+ * @author Declan Dempsey
+ */
+public class Entry implements Serializable {
     private int entryId;
     private String billId;
     private String memberId;
@@ -15,19 +19,65 @@ public class Entry {
     private boolean manualEntry;
     private static int counter = 1;
 
+    // Default constructor
     public Entry() {
     }
 
+    /**
+     * Used for entry objects for RandomPick
+     * @param memberId the member's Id number
+     */
     public Entry(String memberId) {
         this.entryId = counter++;
         this.memberId = memberId;
     }
 
+    /**
+     * Used for entry objects of LuckyNumbers
+     * @param memberId member Id number
+     * @param numEnt the 7 lucky numbers
+     * @param manualEntry whether it is a manual or auto entry
+     */
     public Entry(String memberId, int[] numEnt, boolean manualEntry) {
         this.entryId = counter++;
         this.memberId = memberId;
         this.luckyNumbers = numEnt;
         this.manualEntry = manualEntry;
+    }
+
+    /**
+     * 
+     */
+    public void printNumbersInfo() {
+        System.out.print(formatEntryId() + " Numbers:");
+        for (int i = 0; i < luckyNumbers.length; i++) {
+            System.out.printf("%3d", luckyNumbers[i]);
+        }
+
+        if(!isManualEntry()){
+            System.out.println(" [Auto]");
+        } else{
+            System.out.println();
+        }
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String formatEntryId(){
+        String s =  Integer.toString(getEntryId());
+        s = String.format("Entry ID: %-6s", s );
+        return s;
+    }
+
+    /**
+     * 
+     */
+    public void printNums() {
+        for (int i = 0; i < luckyNumbers.length; i++) {
+            System.out.printf("%2d", luckyNumbers[i]);
+        }
     }
 
     public void setPrize(int prize) {
@@ -42,12 +92,6 @@ public class Entry {
         return this.entryId;
     }
 
-    public String formatEntryId(){
-        String s =  Integer.toString(getEntryId());
-        s = String.format("Entry ID: %-6s", s );
-        return s;
-    }
-
     public int[] getNumbers() {
         return this.luckyNumbers;
     }
@@ -56,30 +100,15 @@ public class Entry {
         return this.memberId;
     }
 
-    public void printNumbersInfo() {
-        System.out.print(formatEntryId() + "Numbers: ");
-        for (int i = 0; i < luckyNumbers.length; i++) {
-            System.out.printf("%3d", luckyNumbers[i]);
-        }
-
-        if(!isManualEntry()){
-            System.out.println(" [Auto]");
-        } else{
-            System.out.println();
-        }
-    }
-
     public void printInfo() {
         System.out.print(formatEntryId());
     }
 
-    public void printNums() {
-        for (int i = 0; i < luckyNumbers.length; i++) {
-            System.out.printf("%2d", luckyNumbers[i]);
-        }
-    }
-
     public boolean isManualEntry(){
         return this.manualEntry;
+    }
+
+    public void resetCounter(){
+        counter = 1;
     }
 }

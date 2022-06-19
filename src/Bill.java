@@ -4,9 +4,14 @@
  * LMS username: ddempsey
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Bill {
+/**
+ * Bill class used to create bill objects
+ * @author Declan Dempsey
+ */
+public class Bill implements Serializable{
     private ArrayList<Bill> bills = new ArrayList<Bill>();
     private String billId;
     private String memberID;
@@ -15,6 +20,13 @@ public class Bill {
     private int manualEntries;
     private boolean used;
 
+    /**
+     * Create a bill object from a .csv file
+     * @param billID the billID
+     * @param memberID the memberID of the bill
+     * @param billAmount the bill amount
+     * @param used whether the bill has been used in a previous comp
+     */
     public Bill(String billID, String memberID, Double billAmount, boolean used) {
         this.memberID = memberID;
         this.billId = billID;
@@ -22,23 +34,10 @@ public class Bill {
         this.used = used;
     }
 
-    public Bill() {
-
-    }
-
-    public Bill iterate(String billID) {
-        for (Bill bill : bills) {
-            if ((bill.getBillId()).equals(billID)) {
-                if ((bill.getMemberId()).equals(" ")) {
-                    System.out.println("This bill has no member id. Please try again.");
-                } else {
-                    return bill;
-                }
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Calculates the amount of entries a bill can have
+     * @return the number of entries permitted
+     */
     public int getEntries() {
         int temp = ((int) this.billAmount / 50);
         this.numOfEntries = temp;

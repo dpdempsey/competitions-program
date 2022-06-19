@@ -35,10 +35,6 @@ public class RandomPickCompetition extends Competition {
             randomGenerator = new Random();
         }
 
-        for(Entry entry : winners){
-            String temp = entry.getMemberId();
-
-        }
         int totalPrize = 0;
         int winningEntryCount = 0;
         while (winningEntryCount < MAX_WINNING_ENTRIES) {
@@ -60,9 +56,12 @@ public class RandomPickCompetition extends Competition {
         }
 
         System.out.println(info());
-        System.out.println("Winning Entries:");
+        System.out.println("Winning entries:");
         for(Entry entry : winners){
-            System.out.println("Member ID: " + entry.getMemberId() + ", Member Name: " + getMemberName(entry.getMemberId()) + ", Entry ID: " + entry.getEntryId() + ", Prize: " + entry.getPrize());
+            int entryPrize = entry.getPrize();
+            String s = Integer.toString(entryPrize);
+            s = String.format("%-5s", s);
+            System.out.println("Member ID: " + entry.getMemberId() + ", Member Name: " + getMemberName(entry.getMemberId()) + ", Entry ID: " + entry.getEntryId() + ", Prize: " + s);
         }
         int winEnt = winners.size();
         setReportInfo(totalPrize, entries.size(), winEnt);
@@ -100,5 +99,9 @@ public class RandomPickCompetition extends Competition {
         } else {
             return false;
         }
+    }
+
+    public int getEntrySize(){
+        return entries.size();
     }
 }

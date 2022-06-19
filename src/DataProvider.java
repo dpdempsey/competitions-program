@@ -7,16 +7,20 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class DataProvider {
     private String fileName;
     private String memberFile;
     private String billFile;
-    private ArrayList<Bill> bills = new ArrayList<Bill>();
 
     /**
-     * 
+     * Used when there is no .dat file input
      * @param memberFile A path to the member file (e.g., members.csv)
      * @param billFile   A path to the bill file (e.g., bills.csv)
      * @param fileName   A path to an already saved file
@@ -31,10 +35,13 @@ public class DataProvider {
         readMemberFile(memberFile);
     }
 
-    public DataProvider(String fileName, String memberFile, String billFile) {
-
-    }
-
+    /**
+     * Reads and returns a list of bills from the .csv file
+     * @param billFile name of the .csv file
+     * @return the list of bills
+     * @throws DataAccessException If a file cannot be opened/read
+     * @throws DataFormatException If the format of the the content is incorrect
+     */
     public ArrayList<Bill> readBillFile(String billFile) throws DataAccessException, DataFormatException {
         Scanner inputStream = null;
         String billID = null;
@@ -77,6 +84,13 @@ public class DataProvider {
         return bills;
     }
 
+    /**
+     * Reads and returns a list of bills from the members.csv file
+     * @param memberfile the name of the .csv file
+     * @return the list of members
+     * @throws DataAccessException If a file cannot be opened/read
+     * @throws DataFormatException If the format of the the content is incorrect
+     */
     public ArrayList<Member> readMemberFile(String memberfile) throws DataAccessException, DataFormatException {
         Scanner inputStream = null;
         String memID = null;
@@ -112,5 +126,54 @@ public class DataProvider {
         }
         inputStream.close();
         return members;
+    }
+
+    public Folder readFromFile(String fileName) throws DataAccessException, DataFormatException{
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
+            Folder file = (Folder)in.readObject();
+            in.close();
+            return file;
+        }
+        catch(FileNotFoundException e){
+            throw new DataAccessException();
+        }
+        catch(ClassNotFoundException e){
+            throw new DataAccessException();
+        }
+        catch(IOException e){
+            throw new DataFormatException();
+        }
+    }
+
+    public void writeToFile(Folder folder) throws DataFormatException{
+        String fileName = folder.getFileName();
+        try{
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
+            out.writeObject(folder);
+            out.close();
+        }
+        catch(IOException e){
+            throw new DataFormatException();
+        }
+    }
+
+    public void updateBillFile(String billFile, ArrayList<Bill> bills) throws DataAccessException{
+        PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream(billFile));
+        }
+        catch(FileNotFoundException e){
+            throw new DataAccessException();
+        }
+
+        for(Bill bill : bills){
+            String billID = bill.getBillId();
+            String memberID = bill.getMemberId();
+            double billAmount = bill.getBillAmount();
+            boolean used = bill.getUsed();
+            outputStream.println(billID + "," + memberID + "," + billAmount + "," + used);
+        }
+        outputStream.close();
     }
 }
