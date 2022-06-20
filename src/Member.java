@@ -5,12 +5,27 @@
  */
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
-public class Member implements Serializable{
+/**
+ * Member class used in creating member objects
+ */
+public class Member implements Serializable {
     private String memberID;
     private String memberName;
     private String memberAddress;
+
+    /**
+     * Create a member with given parameters
+     * 
+     * @param memberID     the memberID
+     * @param memberName   the member's name
+     * @param memberAddres the member's email address
+     */
+    public Member(String memberID, String memberName, String memberAddres) {
+        this.memberID = memberID;
+        this.memberName = memberName;
+        this.memberAddress = memberAddres;
+    }
 
     public String getMemberID() {
         return this.memberID;
@@ -18,12 +33,6 @@ public class Member implements Serializable{
 
     public String getMemberName() {
         return this.memberName;
-    }
-
-    public Member(String memberID, String memberName, String memberAddres) {
-        this.memberID = memberID;
-        this.memberName = memberName;
-        this.memberAddress = memberAddres;
     }
 
 }

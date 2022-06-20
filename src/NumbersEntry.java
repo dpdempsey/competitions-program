@@ -5,20 +5,32 @@
  */
 
 import java.util.Arrays;
+
+/**
+ * Numbers entry used in taking in manual entries for LuckyNumbersCompetition
+ * 
+ * @author Declan Dempsey
+ */
 public class NumbersEntry extends Entry {
     private int[] numbers;
 
+    /**
+     * Default constructor that calls the parent class' constructor
+     */
     public NumbersEntry() {
         super();
     }
 
+    /**
+     * Reads in manual entries from the user for LuckyNumbersCompetition
+     */
     public void manualEntries() {
         boolean manualEnt = true;
-        while(manualEnt){
+        while (manualEnt) {
             System.out.println("Please enter 7 different numbers (from the range 1 to 35) separated by whitespace.");
             String line = SimpleCompetitions.kb.nextLine();
             line = line.strip();
-            if(line.matches("[0-9 ]+")){
+            if (line.matches("[0-9 ]+")) {
                 String parts[] = line.split(" ");
                 int[] intArray = new int[parts.length];
                 for (int i = 0; i < parts.length; i++) {
@@ -43,6 +55,12 @@ public class NumbersEntry extends Entry {
         }
     }
 
+    /**
+     * Checks if the inputted numbers aren't bigger than 35
+     * 
+     * @param intArray the numbers
+     * @return false if one or more numbers is greater than 35
+     */
     public boolean checkMax(int[] intArray) {
         for (int i = 0; i < intArray.length; i++) {
             if (intArray[i] > 35) {
@@ -52,6 +70,12 @@ public class NumbersEntry extends Entry {
         return true;
     }
 
+    /**
+     * Checks if there is a duplicate number in the inputted numbers
+     * 
+     * @param intArray the numbers
+     * @return false if there is a duplicate
+     */
     public boolean checkDuplicate(int[] intArray) {
         for (int i = 0; i < intArray.length; i++) {
             for (int j = i + 1; j < intArray.length; j++) {

@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 /**
  * SimpleCompetitions class that holds the main program
+ * 
  * @author Declan Dempsey
  */
 public class SimpleCompetitions implements Serializable {
@@ -20,13 +21,16 @@ public class SimpleCompetitions implements Serializable {
     private ArrayList<Competition> archive = new ArrayList<Competition>();
     public static Scanner kb = new Scanner(System.in);
 
-    // Creates a SimpleCompetitions object and sets isCompActive to be false
+    /**
+     * Creates a SimpleCompetitions object and sets isCompActive to be false
+     */
     public SimpleCompetitions() {
         isCompActive = false;
     }
 
     /**
      * Main program that uses the main SimpleCompetitions class
+     * 
      * @author Declan Dempsey
      * @param args main program arguments
      * @throws DataFormatException
@@ -50,7 +54,7 @@ public class SimpleCompetitions implements Serializable {
             input = input.toUpperCase();
             switch (input) {
                 case "Y":
-                    System.out.println("File name: ");
+                    System.out.println("File name:");
                     fileName = kb.nextLine();
                     System.out.println("Member file: ");
                     memberFile = kb.nextLine();
@@ -93,17 +97,20 @@ public class SimpleCompetitions implements Serializable {
                     System.out.println("Invalid mode! Please choose again.");
             }
         }
-        /* 
-        * Create a new DataProvider object and read from the member file and bill file.
-        * Additionally, read from a .dat file if that option was selected.
-        */
+        /*
+         * Create a new DataProvider object and read from the member file and bill file.
+         * Additionally, read from a .dat file if that option was selected.
+         */
         DataProvider dp = new DataProvider(memberFile, billFile);
         Competition competition = null;
-        if(key){
+        if (key) {
             Folder folder = dp.readFromFile(fileName);
             competition = folder.getComp();
             sc.setArchive(folder.getArchive());
-            sc.setCompActive(competition.getActive());
+            sc.setTestingMode(folder.getTestingMode());
+            if (competition != null) {
+                sc.setCompActive(competition.getActive());
+            }
         }
         // Pull the list of bills and members from the DataProvider class
         ArrayList<Bill> bills = dp.readBillFile(billFile);
@@ -118,14 +125,15 @@ public class SimpleCompetitions implements Serializable {
             switch (option) {
                 case "1":
                     /*
-                     * If there is no active competition, create either a LuckyNumers or RandomPick Competition 
+                     * If there is no active competition, create either a LuckyNumers or RandomPick
+                     * Competition
                      * and add it using the addNewCompetition method
                      */
                     if (!sc.isCompActive()) {
                         boolean comp = true;
                         while (comp) {
                             System.out.println("Type of competition (L: LuckyNumbers, R: RandomPick)?:");
-                            option = kb.nextLine();
+                            option = kb.nextLine().toUpperCase();
                             if (option.equals("L") || option.equals("R")) {
                                 System.out.println("Competition name: ");
                                 String compName = kb.nextLine();
@@ -142,8 +150,10 @@ public class SimpleCompetitions implements Serializable {
                     break;
                 case "2":
                     /*
-                     * If competition is active, first check and return the bill the user has inputted.
-                     * Then accept any manual entries if selected. Then add those entries to the competition using the addEntries method
+                     * If competition is active, first check and return the bill the user has
+                     * inputted.
+                     * Then accept any manual entries if selected. Then add those entries to the
+                     * competition using the addEntries method
                      */
                     if (sc.isCompActive()) {
                         boolean checkBill = true;
@@ -194,8 +204,9 @@ public class SimpleCompetitions implements Serializable {
                                             }
                                         }
                                     } else {
-                                        System.out.println("The number must be in the range from 0 to " + bill.getEntries()
-                                                + ". Please try again.");
+                                        System.out.println(
+                                                "The number must be in the range from 0 to " + bill.getEntries()
+                                                        + ". Please try again.");
                                     }
                                 }
                             } else {
@@ -223,7 +234,8 @@ public class SimpleCompetitions implements Serializable {
                     break;
                 case "3":
                     /*
-                     * First check whether there is an active competition and if there are entries to it.
+                     * First check whether there is an active competition and if there are entries
+                     * to it.
                      * Then draw the winners, and close the competition, moving it to archive.
                      */
                     if (sc.isCompActive() && competition.hasEntries()) {
@@ -243,7 +255,7 @@ public class SimpleCompetitions implements Serializable {
                     // Call the report method to detail a report of the closed and active competitions
                     if (sc.isCompActive()) {
                         sc.report(competition);
-                    } else if((sc.getArchive()).size() != 0){
+                    } else if ((sc.getArchive()).size() != 0) {
                         sc.report(competition);
                     } else {
                         System.out.println("No competition has been created yet!");
@@ -257,7 +269,7 @@ public class SimpleCompetitions implements Serializable {
                     if (option.equals("Y")) {
                         System.out.println("File name:");
                         fileName = kb.nextLine();
-                        Folder folder = new Folder(competition, sc.getArchive(), fileName);
+                        Folder folder = new Folder(competition, sc.getArchive(), fileName, sc.getIsTestingMode());
                         dp.writeToFile(folder);
                         System.out.println("Competitions have been saved to file.");
                         dp.updateBillFile(billFile, bills);
@@ -272,11 +284,13 @@ public class SimpleCompetitions implements Serializable {
             }
         }
     }
+
     /**
      * Adds a new competition
-     * @param choice LuckyNumers or RandomPick
+     * 
+     * @param choice   LuckyNumers or RandomPick
      * @param compName the name of the competition
-     * @param members the list of members
+     * @param members  the list of members
      * @return the competition that has been created
      */
     public Competition addNewCompetition(String choice, String compName, ArrayList<Member> members) {
@@ -285,23 +299,31 @@ public class SimpleCompetitions implements Serializable {
         if (choice.equals("R")) {
             RandomPickCompetition ranComp = new RandomPickCompetition(compName, getIsTestingMode(), members);
             this.competition = ranComp;
+            if (archive.size() > 0) {
+                ranComp.setCount(archive.size() + 1);
+            }
             System.out.println("A new competition has been created!");
             System.out.println(ranComp.info());
             this.isCompActive = true;
             return ranComp;
         } else if (choice.equals("L")) {
             LuckyNumbersCompetition luckComp = new LuckyNumbersCompetition(compName, getIsTestingMode(), members);
+            this.competition = luckComp;
+            if (archive.size() > 0) {
+                luckComp.setCount(archive.size() + 1);
+            }
             System.out.println("A new competition has been created!");
             System.out.println(luckComp.info());
-            this.competition = luckComp;
             this.isCompActive = true;
             return luckComp;
         } else {
             return null;
         }
     }
+
     /**
      * Takes a bill and checks whether it is eligible to be used as an entry
+     * 
      * @return returns the bill if checks are passed
      */
 
@@ -329,10 +351,10 @@ public class SimpleCompetitions implements Serializable {
                         }
                     }
                 }
-                if(key){
+                if (key) {
                     System.out.println("This bill does not exist. Please try again.");
                 }
-                
+
             } else {
                 System.out.println("Invalid bill id! It must be a 6-digit number. Please try again.");
             }
@@ -342,33 +364,36 @@ public class SimpleCompetitions implements Serializable {
 
     /**
      * Generates a report of the active and closed competitions
+     * 
      * @param competition the active competition
      */
     public void report(Competition competition) {
         int active = 0;
-        if(competition != null){
+        if (competition != null) {
             active++;
-        }                    
-        System.out.println("----SUMMARY REPORT----\n" 
-        + "+Number of completed competitions: " + archive.size() +"\n" +
-        "+Number of active competitions: " + active);
-        
-        if(archive.size() > 0){
-            for(Competition comp : archive){
-                System.out.println("\nCompetition ID: " + comp.getID() + ", name: " + comp.getName() + ", active: no"); 
-                System.out.println("Number of entries: " + comp.getTotalEntries() + "\n" + 
-                "Number of winning entries: " + comp.getWinningEntries() + "\n" + 
-                "Total awarded prizes: " + comp.getTotalPrize());
+        }
+        System.out.println("----SUMMARY REPORT----\n"
+                + "+Number of completed competitions: " + archive.size() + "\n" +
+                "+Number of active competitions: " + active);
+
+        if (archive.size() > 0) {
+            for (Competition comp : archive) {
+                System.out.println("\nCompetition ID: " + comp.getID() + ", name: " + comp.getName() + ", active: no");
+                System.out.println("Number of entries: " + comp.getTotalEntries() + "\n" +
+                        "Number of winning entries: " + comp.getWinningEntries() + "\n" +
+                        "Total awarded prizes: " + comp.getTotalPrize());
             }
         }
-        if(competition != null){
-            System.out.print("\nCompetition ID: " + competition.getID() + ", name: " + competition.getName() + ", active: yes\n");
+        if (competition != null) {
+            System.out.print("\nCompetition ID: " + competition.getID() + ", name: " + competition.getName()
+                    + ", active: yes\n");
             System.out.println("Number of entries: " + competition.getEntrySize());
         }
     }
 
     /**
      * Checking whether there is an active competition
+     * 
      * @return true if a competition exists, flase if not
      */
     public boolean compExists() {
@@ -381,6 +406,7 @@ public class SimpleCompetitions implements Serializable {
 
     /**
      * Sets a bill to be used once used
+     * 
      * @param billID the bill in question
      */
     public void setUsed(String billID) {
@@ -414,7 +440,7 @@ public class SimpleCompetitions implements Serializable {
         return isCompActive;
     }
 
-    public void setCompActive(boolean compActive){
+    public void setCompActive(boolean compActive) {
         this.isCompActive = compActive;
     }
 
@@ -430,15 +456,15 @@ public class SimpleCompetitions implements Serializable {
         this.testingMode = testMode;
     }
 
-    public ArrayList<Competition> getArchive(){
+    public ArrayList<Competition> getArchive() {
         return this.archive;
     }
 
-    public void addArchive(Competition competition){
+    public void addArchive(Competition competition) {
         archive.add(competition);
     }
 
-    public void setArchive(ArrayList<Competition> archive){
+    public void setArchive(ArrayList<Competition> archive) {
         this.archive = archive;
     }
 }

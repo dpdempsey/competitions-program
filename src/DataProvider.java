@@ -14,6 +14,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Class used to read Bill and Member files, as well as overwrite bill file and
+ * read in .dat saved files
+ * 
+ * @author Declan Dempsey
+ */
 public class DataProvider {
     private String fileName;
     private String memberFile;
@@ -21,22 +27,22 @@ public class DataProvider {
 
     /**
      * Used when there is no .dat file input
+     * 
      * @param memberFile A path to the member file (e.g., members.csv)
      * @param billFile   A path to the bill file (e.g., bills.csv)
-     * @param fileName   A path to an already saved file
      * @throws DataAccessException If a file cannot be opened/read
      * @throws DataFormatException If the format of the the content is incorrect
      */
     public DataProvider(String memberFile, String billFile) throws DataAccessException, DataFormatException {
         this.memberFile = memberFile;
         this.billFile = billFile;
-
         readBillFile(billFile);
         readMemberFile(memberFile);
     }
 
     /**
      * Reads and returns a list of bills from the .csv file
+     * 
      * @param billFile name of the .csv file
      * @return the list of bills
      * @throws DataAccessException If a file cannot be opened/read
@@ -86,6 +92,7 @@ public class DataProvider {
 
     /**
      * Reads and returns a list of bills from the members.csv file
+     * 
      * @param memberfile the name of the .csv file
      * @return the list of members
      * @throws DataAccessException If a file cannot be opened/read
@@ -128,46 +135,62 @@ public class DataProvider {
         return members;
     }
 
-    public Folder readFromFile(String fileName) throws DataAccessException, DataFormatException{
+    /**
+     * Returns a Folder object from a .dat file
+     * 
+     * @param fileName the filename to read from
+     * @return a Folder object which contains competition information
+     * @throws DataAccessException if a file cannot be opened or read
+     * @throws DataFormatException if the file being read from isn't formatted correctly
+     */
+    public Folder readFromFile(String fileName) throws DataAccessException, DataFormatException {
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
-            Folder file = (Folder)in.readObject();
+            Folder folder = (Folder) in.readObject();
             in.close();
-            return file;
-        }
-        catch(FileNotFoundException e){
-            throw new DataAccessException();
-        }
-        catch(ClassNotFoundException e){
-            throw new DataAccessException();
-        }
-        catch(IOException e){
-            throw new DataFormatException();
+            return folder;
+        } catch (FileNotFoundException e) {
+            throw new DataAccessException("The saved file could not be found!");
+        } catch (ClassNotFoundException e) {
+            throw new DataAccessException("The saved file has a format error!");
+        } catch (IOException e) {
+            throw new DataFormatException("The saved file has a format error!");
         }
     }
 
-    public void writeToFile(Folder folder) throws DataFormatException{
+    /**
+     * Writes information to a file to be opened later
+     * 
+     * @param folder Folder object to be written
+     * @throws DataFormatException
+     */
+    public void writeToFile(Folder folder) throws DataFormatException {
         String fileName = folder.getFileName();
-        try{
+        try {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
             out.writeObject(folder);
             out.close();
-        }
-        catch(IOException e){
-            throw new DataFormatException();
+        } catch (IOException e) {
+            throw new DataFormatException("Error in saving the file!");
         }
     }
 
-    public void updateBillFile(String billFile, ArrayList<Bill> bills) throws DataAccessException{
+    /**
+     * Used to overwrite the bill file when closing the program
+     * 
+     * @param billFile the name of the bill file
+     * @param bills    the list of updated bills
+     * @throws DataAccessException if the file is not found
+     */
+    public void updateBillFile(String billFile, ArrayList<Bill> bills) throws DataAccessException {
         PrintWriter outputStream = null;
         try {
             outputStream = new PrintWriter(new FileOutputStream(billFile));
-        }
-        catch(FileNotFoundException e){
-            throw new DataAccessException();
+        } catch (FileNotFoundException e) {
+            throw new DataAccessException("Bill File could not be found!");
         }
 
-        for(Bill bill : bills){
+        for (Bill bill : bills) {
             String billID = bill.getBillId();
             String memberID = bill.getMemberId();
             double billAmount = bill.getBillAmount();

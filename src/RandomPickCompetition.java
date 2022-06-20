@@ -6,7 +6,13 @@
 
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Collections;
 
+/**
+ * Create RandomPickCompetitions, add entries and draw winners
+ * 
+ * @author Declan Dempsey
+ */
 public class RandomPickCompetition extends Competition {
     private final int FIRST_PRIZE = 50000;
     private final int SECOND_PRIZE = 5000;
@@ -19,6 +25,14 @@ public class RandomPickCompetition extends Competition {
     private int countEntries;
     private boolean testingMode;
 
+    /**
+     * Create a competition with a name, list of memebers and whether or not it is
+     * testing mode
+     * 
+     * @param compName the name of the competition
+     * @param testingMode whether it is in testing mode
+     * @param members the list of members
+     */
     public RandomPickCompetition(String compName, boolean testingMode, ArrayList<Member> members) {
         super(members);
         setName(compName);
@@ -26,6 +40,11 @@ public class RandomPickCompetition extends Competition {
         this.testingMode = testingMode;
     }
 
+    /**
+     * Draw the winners from the competition
+     * 
+     * @param members a list of current members to get the member name
+     */
     public void drawWinners(ArrayList<Member> members) {
         ArrayList<String> winMemberId = new ArrayList<String>();
         Random randomGenerator = null;
@@ -34,12 +53,15 @@ public class RandomPickCompetition extends Competition {
         } else {
             randomGenerator = new Random();
         }
+        if (entries.size() > 0) {
+            Entry entry = new Entry();
+            entry.setCounter(entries.size() + 1);
+        }
 
         int totalPrize = 0;
         int winningEntryCount = 0;
         while (winningEntryCount < MAX_WINNING_ENTRIES) {
             int winningEntryIndex = randomGenerator.nextInt(entries.size());
-            
             Entry winningEntry = entries.get(winningEntryIndex);
             String memberId = winningEntry.getMemberId();
             if (winningEntry.getPrize() == 0 && !winMemberId.contains(memberId)) {
@@ -47,26 +69,34 @@ public class RandomPickCompetition extends Competition {
                 winningEntry.setPrize(currentPrize);
                 winMemberId.add(memberId);
                 winners.add(winningEntry);
-                winningEntryCount++;
             }
-            if(countEntries == winningEntryCount){
-                break;
-            }
+
+            winningEntryCount++;
             totalPrize += winningEntry.getPrize();
         }
-
+        Collections.sort(winners);
         System.out.println(info());
         System.out.println("Winning entries:");
-        for(Entry entry : winners){
+        for (Entry entry : winners) {
             int entryPrize = entry.getPrize();
             String s = Integer.toString(entryPrize);
             s = String.format("%-5s", s);
-            System.out.println("Member ID: " + entry.getMemberId() + ", Member Name: " + getMemberName(entry.getMemberId()) + ", Entry ID: " + entry.getEntryId() + ", Prize: " + s);
+            System.out.println("Member ID: " + entry.getMemberId() + ", Member Name: "
+                    + getMemberName(entry.getMemberId()) + ", Entry ID: " + entry.getEntryId() + ", Prize: " + s);
         }
         int winEnt = winners.size();
         setReportInfo(totalPrize, entries.size(), winEnt);
+        winners.clear();
+        winMemberId.clear();
+        entries.clear();
+        totalPrize = 0;
     }
 
+    /**
+     * Add entries to the competition
+     * 
+     * @param bill the bill used in creating an entry
+     */
     public void addEntries(Bill bill) {
         int numOfEntries = bill.getEntries();
         String memberId = bill.getMemberId();
@@ -85,14 +115,9 @@ public class RandomPickCompetition extends Competition {
         tempEnt.clear();
     }
 
-    public boolean getIsTestingMode() {
-        return this.testingMode;
-    }
-
-    public String info() {
-        return "Competition ID: " + getID() + ", Competition Name: " + getName() + ", Type: RandomPickCompetition";
-    }
-
+    /**
+     * Checks whether the current competition has entries
+     */
     public boolean hasEntries() {
         if (entries.size() > 0) {
             return true;
@@ -101,7 +126,22 @@ public class RandomPickCompetition extends Competition {
         }
     }
 
-    public int getEntrySize(){
+    /**
+     * Prints out information of the competition
+     */
+    public String info() {
+        return "Competition ID: " + getID() + ", Competition Name: " + getName() + ", Type: RandomPickCompetition";
+    }
+
+    public boolean getIsTestingMode() {
+        return this.testingMode;
+    }
+
+    public int getEntrySize() {
         return entries.size();
+    }
+
+    public void setCount(int count) {
+        setID(count);
     }
 }

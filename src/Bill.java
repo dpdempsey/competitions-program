@@ -9,9 +9,10 @@ import java.util.ArrayList;
 
 /**
  * Bill class used to create bill objects
+ * 
  * @author Declan Dempsey
  */
-public class Bill implements Serializable{
+public class Bill implements Serializable {
     private ArrayList<Bill> bills = new ArrayList<Bill>();
     private String billId;
     private String memberID;
@@ -22,10 +23,11 @@ public class Bill implements Serializable{
 
     /**
      * Create a bill object from a .csv file
-     * @param billID the billID
-     * @param memberID the memberID of the bill
+     * 
+     * @param billID     the billID
+     * @param memberID   the memberID of the bill
      * @param billAmount the bill amount
-     * @param used whether the bill has been used in a previous comp
+     * @param used       whether the bill has been used in a previous comp
      */
     public Bill(String billID, String memberID, Double billAmount, boolean used) {
         this.memberID = memberID;
@@ -36,6 +38,7 @@ public class Bill implements Serializable{
 
     /**
      * Calculates the amount of entries a bill can have
+     * 
      * @return the number of entries permitted
      */
     public int getEntries() {

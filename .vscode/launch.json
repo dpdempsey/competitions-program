@@ -23,7 +23,7 @@
             "name": "Launch with visible test",
             "request": "launch",
             "mainClass": "SimpleCompetitions",
-            "args": ["<", "/Users/declandempsey/Downloads/test/visible9.in"]
+            "args": ["<", "/Users/declandempsey/Downloads/test/custom3.in"]
           },
     ]
 }
