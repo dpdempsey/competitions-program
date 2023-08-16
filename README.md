@@ -1,18 +1,19 @@
-## Getting Started
+# Simple Competitions - java final project
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This project was cloned from a private repository and was a submission as the final project in a introductory java programming subject at The University of Melbourne.
 
-## Folder Structure
+This program is a terminal application that helps companies create competitions to boost their sales. For instance, during the Easter period, a retail store can use this program software to create a lucky draw game. 
 
-The workspace contains two folders by default, where:
+In the game, a customer is given entries equivalent to the size of its purchase after their single-purchase final balance, after discounts, reaces a specic amount. Once the competition time ends, the retailer draws winners and the winning customers will get points added to their membership account; customers can use these points for future purchases if they wish.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Run the program
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+```
+cd ~/src
+javac SimpleCompetitions.java
+java SimpleCompetitions
+```
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+The program can load a saved competition from file.
 
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+The program is also able to be run in a testing mode or in a normal mode. The testing mode is designed in such a way to test the program in a deterministic manner.
