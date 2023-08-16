@@ -9,9 +9,9 @@ In the game, a customer is given entries equivalent to the size of its purchase 
 ## Run the program
 
 '''
-> cd ~/src
-> javac SimpleCompetitions.java
-> java SimpleCompetitions
+cd ~/src
+javac SimpleCompetitions.java
+java SimpleCompetitions
 '''
 
 The program can load a saved competition from file.
